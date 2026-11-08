@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b16">
+<title>FEEDSURGE — Your World. Your Momentum.</title>
+<style>
+:root {
+  --bg:#080b16;
+  --panel:#101629;
+  --panel2:#141d35;
+  --line:rgba(125,160,255,.14);
+  --text:#f4f7ff;
+  --muted:#8995b2;
+  --cyan:#36e5f4;
+  --blue:#537dff;
+  --violet:#a66bff;
+  --gradient:linear-gradient(110deg,#36e5f4,#537dff,#a66bff);
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 15% -10%,rgba(42,105,255,.19),transparent 38%),
+    radial-gradient(ellipse at 90% 15%,rgba(147,65,255,.13),transparent 32%),
+    var(--bg);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+}
+button,input,textarea {font:inherit}
+button {cursor:pointer}
+.app {min-height:100vh}
+.topbar {
+  height:72px;
+  padding:0 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+  background:rgba(8,11,22,.88);
+  backdrop-filter:blur(18px);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo {
+  font-size:25px;
+  font-weight:950;
+  letter-spacing:-1.5px;
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.logo small {
+  display:block;
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--muted);
+  -webkit-text-fill-color:var(--muted);
+  margin-top:-3px;
+}
+.top-actions {display:flex;gap:12px;align-items:center}
+.search {
+  width:220px;
+  padding:11px 15px;
+  border-radius:24px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:white;
+}
+.avatar {
+  width:37px;height:37px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--gradient);
+  font-weight:900;color:#07101c;
+}
+.layout {
+  max-width:1450px;
+  margin:auto;
+  padding:28px 22px 100px;
+  display:grid;
+  grid-template-columns:225px minmax(0,680px) 270px;
+  gap:24px;
+}
+.sidebar,.rightbar {position:sticky;top:96px;align-self:start}
+.nav-title {
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:800;
+  margin:12px 10px;
+}
+.nav-item {
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#aab5d0;
+  padding:13px 12px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+  margin:3px 0;
+  transition:.2s;
+}
+.nav-item:hover,.nav-item.active {
+  background:linear-gradient(100deg,rgba(54,229,244,.13),rgba(83,125,255,.12));
+  color:white;
+}
+.nav-item.active {box-shadow:inset 3px 0 var(--cyan)}
+.nav-icon {width:22px;text-align:center;font-size:18px}
+.nav-bottom {
+  margin-top:24px;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--panel);
+}
+.mini-label {font-size:10px;color:var(--muted);letter-spacing:1.5px}
+.main {min-width:0}
+.hero {
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(92,151,255,.25);
+  border-radius:22px;
+  padding:27px;
+  background:
+    radial-gradient(ellipse at 85% 20%,rgba(166,107,255,.25),transparent 38%),
+    radial-gradient(ellipse at 5% 100%,rgba(54,229,244,.15),transparent 45%),
+    #111a31;
+  margin-bottom:20px;
+}
+.hero:after {
+  content:"";
+  position:absolute;
+  width:260px;height:90px;
+  right:-40px;bottom:-35px;
+  border:2px solid rgba(54,229,244,.22);
+  border-radius:50%;
+  transform:rotate(-20deg);
+  box-shadow:0 0 0 13px rgba(83,125,255,.06),0 0 0 27px rgba(166,107,255,.05);
+}
+.eyebrow {
+  font-size:10px;
+  letter-spacing:2.5px;
+  color:var(--cyan);
+  font-weight:900;
+}
+.hero h1 {font-size:clamp(26px,4vw,39px);line-height:1.1;margin:12px 0}
+.hero p {color:#aab7d3;max-width:470px;line-height:1.6;font-size:14px}
+.gradient-text {
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:24px 2px 13px;
+}
+.section-head h2 {font-size:17px;margin:0}
+.section-head span {color:var(--muted);font-size:11px}
+.stories {
+  display:flex;gap:13px;overflow-x:auto;
+  padding:4px 0 14px;
+}
+.story {min-width:66px;text-align:center;font-size:10px;color:var(--muted)}
+.story-ring {
+  width:59px;height:59px;border-radius:50%;
+  padding:3px;margin:0 auto 7px;
+  background:var(--gradient);
+}
+.story-inner {
+  width:100%;height:100%;border-radius:50%;
+  display:grid;place-items:center;
+  background:#18233e;border:2px solid var(--bg);
+  font-size:21px;
+}
+.composer,.post,.feature-card,.right-card {
+  background:linear-gradient(145deg,rgba(20,29,53,.96),rgba(13,19,36,.96));
+  border:1px solid var(--line);
+  border-radius:17px;
+}
+.composer {padding:17px;margin-bottom:18px}
+.composer-top {display:flex;gap:12px;align-items:center}
+.composer textarea {
+  flex:1;resize:vertical;min-height:43px;
+  background:#0b1122;color:white;
+  border:1px solid var(--line);border-radius:12px;
+  padding:12px;outline:none;
+}
+.composer-actions {
+  display:flex;justify-content:space-between;
+  align-items:center;margin-top:13px;gap:8px;flex-wrap:wrap;
+}
+.action-set {display:flex;gap:7px;flex-wrap:wrap}
+.btn {
+  border:1px solid var(--line);
+  background:#17223e;color:#dce7ff;
+  padding:9px 13px;border-radius:10px;
+  font-size:11px;font-weight:750;
+}
+.btn:hover {border-color:var(--cyan)}
+.btn-primary {
+  border:0;color:#07101b;
+  background:var(--gradient);
+  font-weight:900;
+}
+.post {padding:17px;margin-bottom:15px}
+.post-head {display:flex;align-items:center;gap:11px}
+.post-name {font-weight:800;font-size:13px}
+.post-meta {color:var(--muted);font-size:10px;margin-top:4px}
+.post-text {font-size:13px;line-height:1.7;color:#d0d9ee;margin:17px 0}
+.post-media {
+  min-height:190px;border-radius:13px;
+  display:grid;place-items:center;text-align:center;
+  background:
+    radial-gradient(ellipse at 30% 30%,rgba(54,229,244,.2),transparent 40%),
+    radial-gradient(ellipse at 75% 70%,rgba(166,107,255,.25),transparent 40%),
+    #101a32;
+  border:1px solid var(--line);
+  color:#aab9dc;
+}
+.post-media strong {display:block;color:white;font-size:18px}
+.post-actions {display:flex;gap:18px;margin-top:15px;flex-wrap:wrap}
+.post-actions button {
+  border:0;background:transparent;color:var(--muted);
+  font-size:11px;padding:5px 0;
+}
+.post-actions button:hover {color:var(--cyan)}
+.right-card {padding:17px;margin-bottom:15px}
+.right-card h3 {font-size:13px;margin:0 0 14px}
+.feature-card {padding:16px;margin-bottom:10px}
+.feature-card .symbol {font-size:23px}
+.feature-card h3 {font-size:13px;margin:10px 0 5px}
+.feature-card p {font-size:11px;color:var(--muted);line-height:1.5;margin:0}
+.tag {
+  display:inline-block;
+  padding:5px 8px;border-radius:20px;
+  color:var(--cyan);
+  background:rgba(54,229,244,.09);
+  font-size:9px;font-weight:800;
+}
+.progress {
+  height:6px;background:#26314e;
+  border-radius:10px;overflow:hidden;margin:12px 0 6px;
+}
+.progress span {display:block;width:0;height:100%;background:var(--gradient)}
+.empty-state {
+  padding:32px 15px;text-align:center;
+  border:1px dashed rgba(125,160,255,.25);
+  border-radius:15px;color:var(--muted);
+  font-size:12px;line-height:1.7;
+}
+.empty-state strong {display:block;color:white;font-size:15px;margin-bottom:7px}
+.view {display:none}
+.view.active {display:block}
+.view-intro {padding:22px 4px 15px}
+.view-intro h1 {font-size:27px;margin:0 0 8px}
+.view-intro p {font-size:13px;color:var(--muted);line-height:1.6}
+.feature-grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
+.feature-tile {
+  border:1px solid var(--line);border-radius:16px;
+  background:var(--panel);padding:18px;min-height:145px;
+}
+.feature-tile .symbol {font-size:24px}
+.feature-tile h3 {font-size:14px;margin:12px 0 6px}
+.feature-tile p {font-size:11px;color:var(--muted);line-height:1.5;margin:0}
+.mobile-nav {display:none}
+.footer-note {color:#687692;font-size:10px;line-height:1.6;margin:20px 5px}
+@media(max-width:1050px) {
+  .layout {grid-template-columns:190px minmax(0,1fr);max-width:900px}
+  .rightbar {display:none}
+}
+@media(max-width:680px) {
+  .topbar {height:61px;padding:0 16px}
+  .logo {font-size:22px}
+  .search {display:none}
+  .layout {display:block;padding:17px 13px 95px}
+  .sidebar {display:none}
+  .hero {padding:23px 19px}
+  .hero h1 {font-size:29px}
+  .feature-grid {grid-template-columns:1fr 1fr}
+  .mobile-nav {
+    position:fixed;bottom:0;left:0;right:0;
+    z-index:20;display:flex;justify-content:space-around;
+    padding:9px 5px calc(9px + env(safe-area-inset-bottom));
+    background:rgba(8,11,22,.96);
+    backdrop-filter:blur(20px);
+    border-top:1px solid var(--line);
+  }
+  .mobile-nav button {
+    border:0;background:none;color:#8794b2;
+    font-size:9px;display:flex;flex-direction:column;
+    align-items:center;gap:4px;padding:4px;
+  }
+  .mobile-nav button span {font-size:19px}
+  .mobile-nav button.active {color:var(--cyan)}
+  .mobile-nav .create {
+    width:43px;height:43px;border-radius:14px;
+    background:var(--gradient);color:#07101b;
+    font-size:22px;margin-top:-18px;
+  }
+}
+@media(max-width:380px) {
+  .feature-grid {grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="logo">FEEDSURGE<small>YOUR WORLD. YOUR MOMENTUM.</small></div>
+  <div class="top-actions">
+    <input class="search" placeholder="Search creators, topics...">
+    <div class="avatar">F</div>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-title">YOUR SPACE</div>
+  <button class="nav-item active" data-view="home"><span class="nav-icon">⌂</span>Home Feed</button>
+  <button class="nav-item" data-view="arena"><span class="nav-icon">◉</span>Arena</button>
+  <button class="nav-item" data-view="discover"><span class="nav-icon">⌕</span>Discover</button>
+  <button class="nav-item" data-view="messages"><span class="nav-icon">✉</span>Messages</button>
+  <button class="nav-item" data-view="communities"><span class="nav-icon">♧</span>Communities</button>
+  <div class="nav-title">CREATE & GROW</div>
+  <button class="nav-item" data-view="studio"><span class="nav-icon">✦</span>Creator Studio</button>
+  <button class="nav-item" data-view="growth"><span class="nav-icon">↗</span>Growth Intelligence</button>
+  <button class="nav-item" data-view="opportunities"><span class="nav-icon">◇</span>Opportunities</button>
+  <button class="nav-item" data-view="business"><span class="nav-icon">▦</span>Business Suite</button>
+  <button class="nav-item" data-view="kinetic"><span class="nav-icon">⚡</span>Kinetic</button>
+  <div class="nav-title">YOUR ACCOUNT</div>
+  <button class="nav-item" data-view="profile"><span class="nav-icon">◎</span>Profile</button>
+  <button class="nav-item" data-view="activity"><span class="nav-icon">♧</span>Activity</button>
+  <div class="nav-bottom">
+    <div class="mini-label">FEEDSURGE</div>
+    <p style="font-size:12px;line-height:1.5">A place to connect, create and move forward.</p>
+    <span class="tag">BUILT FOR MOMENTUM</span>
+  </div>
+</aside>
+
+<main class="main">
+<section class="view active" id="home">
+  <div class="hero">
+    <div class="eyebrow">THE NEXT WAVE STARTS HERE</div>
+    <h1>Your world.<br><span class="gradient-text">Your momentum.</span></h1>
+    <p>Connect with your people. Discover what's moving. Create something worth sharing. Build your next opportunity.</p>
+    <button class="btn btn-primary" onclick="showView('discover')">Explore FEEDSURGE →</button>
+  </div>
+
+  <div class="section-head"><h2>Your circles</h2><span>Stories & updates</span></div>
+  <div class="stories">
+    <div class="story"><div class="story-ring"><div class="story-inner">＋</div></div>Your story</div>
+    <div class="story"><div class="story-ring"><div class="story-inner">✦</div></div>Creators</div>
+    <div class="story"><div class="story-ring"><div class="story-inner">◉</div></div>Community</div>
+    <div class="story"><div class="story-ring"><div class="story-inner">♫</div></div>Culture</div>
+    <div class="story"><div class="story-ring"><div class="story-inner">⚡</div></div>Ideas</div>
+  </div>
+
+  <div class="section-head"><h2>Share something</h2><span>Your voice matters</span></div>
+  <div class="composer">
+    <div class="composer-top">
+      <div class="avatar">F</div>
+      <textarea id="postText" placeholder="What's happening in your world?"></textarea>
+    </div>
+    <div class="composer-actions">
+      <div class="action-set">
+        <button class="btn" onclick="notice('Photo and video publishing will be connected in the functionality phase.')">▧ Photo / Video</button>
+        <button class="btn" onclick="notice('More post formats are planned for the connected build.')">✦ More</button>
+      </div>
+      <button class="btn btn-primary" onclick="previewPost()">Preview post</button>
+    </div>
+    <div id="postPreview"></div>
+  </div>
+
+  <div class="section-head"><h2>Your feed</h2><span>Real connections, no fabricated posts</span></div>
+  <div class="empty-state">
+    <strong>Your feed starts with your people.</strong>
+    Follow creators and communities to see their posts here. No sample posts or fake activity.
+    <br><br><button class="btn" onclick="showView('discover')">Find people to follow</button>
+  </div>
+</section>
+
+<section class="view" id="arena">
+  <div class="view-intro"><h1>The <span class="gradient-text">Arena</span></h1><p>A place for short-form video, creative expression and community discovery.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">▶</div><h3>Short Video</h3><p>Discover a vertical stream of creator videos and fresh perspectives.</p></div>
+    <div class="feature-tile"><div class="symbol">◉</div><h3>Live Experiences</h3><p>Connect through live sessions, premieres and events.</p></div>
+  </div>
+  <div class="section-head"><h2>Video feed</h2><span>Ready for real content</span></div>
+  <div class="empty-state"><strong>The Arena is waiting for its creators.</strong>Published videos will appear here when media publishing is connected.</div>
+</section>
+
+<section class="view" id="discover">
+  <div class="view-intro"><h1>Discover <span class="gradient-text">what's next.</span></h1><p>Explore creators, communities, conversations and interests.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">✦</div><h3>Creators</h3><p>Find people making things you care about.</p></div>
+    <div class="feature-tile"><div class="symbol">⌕</div><h3>Topics</h3><p>Explore interests and conversations.</p></div>
+    <div class="feature-tile"><div class="symbol">♧</div><h3>Communities</h3><p>Find your people and shared interests.</p></div>
+    <div class="feature-tile"><div class="symbol">◇</div><h3>Collaborations</h3><p>Discover potential creative connections.</p></div>
+  </div>
+  <div class="section-head"><h2>Explore</h2><span>Personalized discovery comes later</span></div>
+  <div class="empty-state"><strong>Your next connection starts here.</strong>Real discovery results will appear when search and recommendations are connected.</div>
+</section>
+
+<section class="view" id="messages">
+  <div class="view-intro"><h1>Messages</h1><p>Conversations, connections and collaboration — all in one place.</p></div>
+  <div class="empty-state"><strong>Your conversations will live here.</strong>Connect with people and message them when messaging is enabled.</div>
+</section>
+
+<section class="view" id="communities">
+  <div class="view-intro"><h1>Your <span class="gradient-text">Communities</span></h1><p>Bring people together around shared interests, ideas and goals.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">♧</div><h3>Community Spaces</h3><p>Build and participate in interest-based groups.</p></div>
+    <div class="feature-tile"><div class="symbol">◈</div><h3>Collaboration Rooms</h3><p>Work together and exchange ideas.</p></div>
+  </div>
+  <div class="empty-state"><strong>Your community story begins here.</strong>Communities will populate as real spaces are created.</div>
+</section>
+
+<section class="view" id="studio">
+  <div class="view-intro"><h1>Creator <span class="gradient-text">Studio</span></h1><p>Your creative workspace for planning, publishing and understanding your content.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">▧</div><h3>Content Planner</h3><p>Organize ideas and plan your publishing calendar.</p></div>
+    <div class="feature-tile"><div class="symbol">▶</div><h3>Media Library</h3><p>Manage your photos, videos and creative assets.</p></div>
+    <div class="feature-tile"><div class="symbol">✦</div><h3>Creator Portfolio</h3><p>Showcase your work, identity and experience.</p></div>
+    <div class="feature-tile"><div class="symbol">◷</div><h3>Performance</h3><p>Understand how published content performs.</p></div>
+  </div>
+</section>
+
+<section class="view" id="growth">
+  <div class="view-intro"><h1>Growth <span class="gradient-text">Intelligence</span></h1><p>Turn real audience signals into smarter creative decisions.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">↗</div><h3>Audience Insights</h3><p>Understand audience activity and interests using real data.</p></div>
+    <div class="feature-tile"><div class="symbol">⌁</div><h3>Content Intelligence</h3><p>Learn from engagement and content performance.</p></div>
+    <div class="feature-tile"><div class="symbol">◎</div><h3>Growth Map</h3><p>Set goals and track meaningful progress.</p></div>
+    <div class="feature-tile"><div class="symbol">◇</div><h3>Audience Path</h3><p>Explore ways to reach relevant communities.</p></div>
+  </div>
+  <div class="empty-state" style="margin-top:15px"><strong>Insights will be based on actual activity.</strong>No invented follower counts, performance numbers or guaranteed growth.</div>
+</section>
+
+<section class="view" id="opportunities">
+  <div class="view-intro"><h1>Opportunities</h1><p>Discover ways for creators and brands to work together.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">◇</div><h3>Brand Partnerships</h3><p>Explore disclosed collaboration opportunities.</p></div>
+    <div class="feature-tile"><div class="symbol">✦</div><h3>Creator Services</h3><p>Showcase skills, services and creative work.</p></div>
+    <div class="feature-tile"><div class="symbol">▤</div><h3>Campaign Briefs</h3><p>Review campaign goals and requirements.</p></div>
+    <div class="feature-tile"><div class="symbol">↔</div><h3>Deal Workspace</h3><p>Organize collaboration conversations and details.</p></div>
+  </div>
+</section>
+
+<section class="view" id="business">
+  <div class="view-intro"><h1>Business <span class="gradient-text">Suite</span></h1><p>Tools for businesses to build visibility, reach relevant audiences and measure results.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">▦</div><h3>Business Profile</h3><p>Present your brand, team and offerings.</p></div>
+    <div class="feature-tile"><div class="symbol">◎</div><h3>Campaign Manager</h3><p>Plan and manage promotional campaigns.</p></div>
+    <div class="feature-tile"><div class="symbol">⌁</div><h3>Audience Insights</h3><p>Understand campaign reach and response.</p></div>
+    <div class="feature-tile"><div class="symbol">▤</div><h3>Results & Reporting</h3><p>Review measurable campaign performance.</p></div>
+  </div>
+</section>
+
+<section class="view" id="kinetic">
+  <div class="view-intro"><h1><span class="gradient-text">Kinetic</span></h1><p>Meaningful participation, community missions and recognition for authentic activity.</p></div>
+  <div class="feature-grid">
+    <div class="feature-tile"><div class="symbol">⚡</div><h3>Kinetic Missions</h3><p>Participate in activities designed to create real value.</p></div>
+    <div class="feature-tile"><div class="symbol">✧</div><h3>Achievements</h3><p>Recognize meaningful contributions and milestones.</p></div>
+    <div class="feature-tile"><div class="symbol">◇</div><h3>Rewards</h3><p>Explore transparent reward opportunities.</p></div>
+    <div class="feature-tile"><div class="symbol">♧</div><h3>Community Impact</h3><p>Celebrate positive participation and collaboration.</p></div>
+  </div>
+  <div class="empty-state" style="margin-top:15px"><strong>No artificial points or activity.</strong>Kinetic balances and rewards will only display verified activity once connected.</div>
+</section>
+
+<section class="view" id="profile">
+  <div class="view-intro"><h1>Your Profile</h1><p>Your identity, work, connections and creative journey.</p></div>
+  <div class="empty-state"><strong>Your profile belongs to you.</strong>Profile details, photos, followers and posts will load from your connected account.</div>
+</section>
+
+<section class="view" id="activity">
+  <div class="view-intro"><h1>Activity</h1><p>Stay informed about interactions, updates and things happening in your network.</p></div>
+  <div class="empty-state"><strong>You're all caught up.</strong>Notifications will appear here when real account activity is connected.</div>
+</section>
+</main>
+
+<aside class="rightbar">
+  <div class="right-card">
+    <h3>Your FEEDSURGE workspace</h3>
+    <span class="tag">YOUR NEXT CHAPTER</span>
+    <p style="font-size:12px;line-height:1.7;color:var(--muted)">A connected space for social discovery, creative expression and meaningful growth.</p>
+  </div>
+  <div class="right-card">
+    <h3>Explore your tools</h3>
+    <div class="feature-card"><div class="symbol">✦</div><h3>Creator Studio</h3><p>Plan and manage your creative work.</p></div>
+    <div class="feature-card"><div class="symbol">↗</div><h3>Growth Intelligence</h3><p>Learn from real audience signals.</p></div>
+    <div class="feature-card"><div class="symbol">⚡</div><h3>Kinetic</h3><p>Make participation meaningful.</p></div>
+  </div>
+  <div class="right-card">
+    <h3>Our promise</h3>
+    <p style="font-size:11px;color:var(--muted);line-height:1.7">Basic social participation should remain useful and accessible. Professional tools create additional opportunities.</p>
+  </div>
+  <div class="footer-note">FEEDSURGE PREVIEW · DEVELOPMENT BUILD<br>Visual concept — not a live production application.</div>
+</aside>
+</div>
+
+<nav class="mobile-nav">
+  <button class="active" data-view="home"><span>⌂</span>Home</button>
+  <button data-view="discover"><span>⌕</span>Discover</button>
+  <button class="create" onclick="showView('home');document.getElementById('postText').focus()">＋</button>
+  <button data-view="activity"><span>♧</span>Activity</button>
+  <button data-view="profile"><span>◎</span>Profile</button>
+</nav>
+</div>
+
+<script>
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const target=document.getElementById(id);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('[data-view]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.view===id);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-view]').forEach(button=>{
+  button.addEventListener('click',()=>showView(button.dataset.view));
+});
+function notice(message) {
+  alert(message);
+}
+function previewPost() {
+  const input=document.getElementById('postText');
+  const output=document.getElementById('postPreview');
+  const value=input.value.trim();
+  if(!value) {
+    alert('Write something first to preview your post.');
+    return;
+  }
+  output.innerHTML='';
+  const card=document.createElement('div');
+  card.className='post';
+  const heading=document.createElement('strong');
+  heading.textContent='Post preview';
+  const body=document.createElement('p');
+  body.className='post-text';
+  body.textContent=value;
+  const note=document.createElement('small');
+  note.style.color='var(--muted)';
+  note.textContent='Preview only — this has not been published.';
+  card.append(heading,body,note);
+  output.append(card);
+}
+</script>
+</body>
+</html>
