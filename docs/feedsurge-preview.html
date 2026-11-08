@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1b">
+<title>FEEDSURGE — Your World. In Motion.</title>
+<style>
+:root {
+  --bg:#080d1b;
+  --panel:#101a2d;
+  --panel2:#14213a;
+  --line:rgba(151,181,255,.13);
+  --text:#f4f7ff;
+  --muted:#91a1bd;
+  --cyan:#36e5f5;
+  --blue:#438cff;
+  --purple:#a66bff;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:
+    radial-gradient(ellipse at 52% -20%,rgba(47,115,255,.22),transparent 48%),
+    radial-gradient(ellipse at 100% 50%,rgba(137,75,255,.10),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button {font:inherit;cursor:pointer}
+.app {min-height:100vh;display:grid;grid-template-columns:230px minmax(0,680px) 280px;gap:24px;max-width:1440px;margin:auto;padding:24px}
+.sidebar,.rightbar {position:sticky;top:24px;height:calc(100vh - 48px)}
+.brand {display:flex;align-items:center;gap:11px;margin:8px 0 38px}
+.mark {
+  width:39px;height:39px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--cyan),var(--blue),var(--purple));
+  color:#071020;font-size:23px;font-weight:900;
+  box-shadow:0 0 28px #398cff55;
+}
+.brand-name {font-size:21px;font-weight:900;letter-spacing:1.5px}
+.brand-name span {color:var(--cyan)}
+.tagline {font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:3px}
+.nav-label {font-size:10px;color:#7185a8;letter-spacing:1.7px;margin:25px 12px 10px}
+.nav {display:grid;gap:7px}
+.nav button {
+  border:1px solid transparent;background:transparent;color:#aebbd1;
+  padding:13px 14px;border-radius:13px;text-align:left;
+  display:flex;align-items:center;gap:13px;font-size:14px;
+}
+.nav button:hover,.nav button.active {
+  background:linear-gradient(100deg,#16304b,#17223d);
+  border-color:#36e5f533;color:white;
+}
+.nav button.active {box-shadow:inset 3px 0 var(--cyan)}
+.nav-icon {width:21px;text-align:center;font-size:17px}
+.sidebar-note {
+  position:absolute;bottom:8px;left:0;right:0;
+  border:1px solid var(--line);border-radius:17px;padding:16px;
+  background:linear-gradient(145deg,#142b43,#11172b);
+}
+.sidebar-note strong {font-size:13px}
+.sidebar-note p {font-size:11px;line-height:1.6;color:var(--muted)}
+main {min-width:0}
+.topline {display:flex;align-items:center;justify-content:space-between;margin:7px 0 25px}
+.page-kicker {font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase}
+.top-actions {display:flex;gap:9px}
+.round-btn {
+  width:39px;height:39px;border:1px solid var(--line);
+  background:var(--panel);color:white;border-radius:13px;
+}
+.hero {
+  position:relative;overflow:hidden;
+  border:1px solid #4c9eff33;border-radius:24px;padding:29px;
+  background:linear-gradient(120deg,#142c49,#111b35 65%,#211b43);
+}
+.hero:after {
+  content:"";position:absolute;width:260px;height:260px;
+  right:-90px;top:-110px;border:1px solid #36e5f544;
+  border-radius:50%;box-shadow:0 0 0 24px #36e5f50a,0 0 0 50px #36e5f508;
+}
+.hero small {color:var(--cyan);letter-spacing:2px;font-size:10px;font-weight:800}
+.hero h1 {font-size:clamp(30px,5vw,45px);line-height:1.08;margin:13px 0 12px;max-width:470px}
+.gradient-text {
+  background:linear-gradient(90deg,var(--cyan),#75aaff,var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p {color:#b0bfd6;line-height:1.65;font-size:14px;max-width:440px;margin:0}
+.section-heading {display:flex;justify-content:space-between;align-items:center;margin:28px 2px 14px}
+.section-heading h2 {font-size:17px;margin:0}
+.section-heading span {font-size:11px;color:var(--muted)}
+.composer,.feed-empty,.tool-card {
+  border:1px solid var(--line);background:linear-gradient(145deg,#111d32,#0e1729);
+  border-radius:19px;padding:18px;
+}
+.composer-top {display:flex;align-items:center;gap:12px}
+.avatar {
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  display:grid;place-items:center;color:#071020;font-weight:900;
+}
+.composer-prompt {color:#9aaac4;font-size:14px}
+.composer-actions {display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+.action {
+  background:#17243b;border:1px solid var(--line);color:#dbe7fb;
+  padding:9px 12px;border-radius:11px;font-size:12px;
+}
+.action:hover {border-color:var(--cyan);color:var(--cyan)}
+.action.primary {
+  margin-left:auto;background:linear-gradient(100deg,#1e9fc2,#426df2);
+  border:0;color:white;font-weight:700;padding-left:18px;padding-right:18px;
+}
+.feed-empty {text-align:center;padding:38px 20px;margin-top:14px}
+.empty-icon {
+  width:62px;height:62px;border-radius:21px;margin:0 auto 17px;
+  display:grid;place-items:center;font-size:27px;
+  background:linear-gradient(135deg,#153c55,#30224e);
+  border:1px solid #48cfff44;
+}
+.feed-empty h3 {font-size:17px;margin:0 0 8px}
+.feed-empty p {font-size:13px;color:var(--muted);line-height:1.6;max-width:360px;margin:0 auto}
+.right-title {font-size:11px;color:var(--muted);letter-spacing:1.7px;margin:14px 0}
+.tool-card {margin-bottom:12px;padding:16px}
+.tool-top {display:flex;align-items:center;gap:11px}
+.tool-icon {
+  width:37px;height:37px;border-radius:12px;display:grid;place-items:center;
+  background:#1b3150;font-size:17px
+}
+.tool-card strong {font-size:13px}
+.tool-card p {font-size:11px;color:var(--muted);line-height:1.55;margin:11px 0 0}
+.tool-tag {font-size:9px;color:var(--cyan);letter-spacing:1px;margin-top:5px}
+.wave {
+  height:76px;overflow:hidden;margin:18px 0;
+  border-radius:15px;background:linear-gradient(90deg,#102746,#172044);
+  position:relative;
+}
+.wave svg {width:100%;height:100%}
+.footer-note {font-size:10px;color:#687b9c;line-height:1.6;margin-top:22px}
+.mobile-nav {display:none}
+@media(max-width:1050px) {
+  .app {grid-template-columns:190px minmax(0,1fr);gap:18px}
+  .rightbar {display:none}
+}
+@media(max-width:650px) {
+  .app {display:block;padding:17px 15px 95px}
+  .sidebar {display:none}
+  .topline {margin:4px 0 19px}
+  .hero {padding:24px 20px;border-radius:20px}
+  .hero h1 {font-size:34px}
+  .section-heading {margin-top:23px}
+  .composer {padding:15px}
+  .action {padding:9px 10px}
+  .action.primary {margin-left:0}
+  .mobile-nav {
+    display:flex;position:fixed;z-index:10;bottom:0;left:0;right:0;
+    padding:10px 7px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(8,13,27,.96);backdrop-filter:blur(18px);
+    border-top:1px solid var(--line);justify-content:space-around;
+  }
+  .mobile-nav button {
+    background:none;border:0;color:#8495b2;font-size:10px;
+    display:grid;gap:5px;justify-items:center;min-width:49px;
+  }
+  .mobile-nav button span {font-size:19px}
+  .mobile-nav button.active {color:var(--cyan)}
+  .mobile-nav .create {
+    width:43px;height:43px;border-radius:15px;
+    background:linear-gradient(135deg,var(--cyan),var(--blue),var(--purple));
+    color:#071020;font-size:25px;margin-top:-17px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">〰</div>
+      <div>
+        <div class="brand-name">FEED<span>SURGE</span></div>
+        <div class="tagline">YOUR WORLD. IN MOTION.</div>
+      </div>
+    </div>
+    <div class="nav-label">YOUR SPACE</div>
+    <nav class="nav">
+      <button class="active" data-page="Home"><span class="nav-icon">⌂</span>Home Feed</button>
+      <button data-page="Discover"><span class="nav-icon">⌕</span>Discover</button>
+      <button data-page="Arena"><span class="nav-icon">✦</span>Arena</button>
+      <button data-page="Messages"><span class="nav-icon">✉</span>Messages</button>
+      <button data-page="Communities"><span class="nav-icon">◉</span>Communities</button>
+    </nav>
+    <div class="nav-label">CREATE & GROW</div>
+    <nav class="nav">
+      <button data-page="Creator Studio"><span class="nav-icon">▧</span>Creator Studio</button>
+      <button data-page="Business Suite"><span class="nav-icon">▦</span>Business Suite</button>
+      <button data-page="Activity"><span class="nav-icon">♧</span>Activity</button>
+      <button data-page="Profile"><span class="nav-icon">◎</span>Profile</button>
+    </nav>
+    <div class="sidebar-note">
+      <strong>Make your next move.</strong>
+      <p>Share what matters. Find your people. Build something that moves.</p>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topline">
+      <div class="page-kicker" id="pageLabel">YOUR FEED · YOUR COMMUNITY</div>
+      <div class="top-actions">
+        <button class="round-btn" aria-label="Search" data-go="Discover">⌕</button>
+        <button class="round-btn" aria-label="Activity" data-go="Activity">♧</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <small>WELCOME TO A NEW CURRENT</small>
+      <h1>Your world.<br><span class="gradient-text">Your people. Your surge.</span></h1>
+      <p>A place to discover ideas, share your voice, build community and create new opportunities.</p>
+    </section>
+
+    <div class="section-heading">
+      <h2>What's happening?</h2>
+      <span>YOUR HOME FEED</span>
+    </div>
+
+    <section class="composer">
+      <div class="composer-top">
+        <div class="avatar">F</div>
+        <div class="composer-prompt">Share something with your world...</div>
+      </div>
+      <div class="composer-actions">
+        <button class="action" data-go="Create">▧ Photo</button>
+        <button class="action" data-go="Create">▶ Video</button>
+        <button class="action" data-go="Create">◉ Live</button>
+        <button class="action primary" data-go="Create">Create post +</button>
+      </div>
+    </section>
+
+    <div class="section-heading">
+      <h2>Your feed</h2>
+      <span>CONTENT FROM YOUR COMMUNITY</span>
+    </div>
+
+    <section class="feed-empty">
+      <div class="empty-icon">〰</div>
+      <h3>Your feed starts here.</h3>
+      <p>When people you follow publish content, it will appear here. Discover creators and communities to make this space your own.</p>
+      <div style="margin-top:19px">
+        <button class="action primary" data-go="Discover">Explore FEEDSURGE</button>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      FEEDSURGE PREVIEW · First visual checkpoint<br>
+      This preview does not yet publish content or connect to your account.
+    </div>
+  </main>
+
+  <aside class="rightbar">
+    <div class="right-title">EXPLORE YOUR POTENTIAL</div>
+    <div class="tool-card">
+      <div class="tool-top"><div class="tool-icon">✦</div><div><strong>Creator Studio</strong><div class="tool-tag">CREATE · LEARN · GROW</div></div></div>
+      <p>Tools for your content, audience insights, collaborations and creator opportunities.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-top"><div class="tool-icon">⌁</div><div><strong>Growth Intelligence</strong><div class="tool-tag">UNDERSTAND YOUR IMPACT</div></div></div>
+      <p>Discover useful ways to understand your audience and improve your content.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-top"><div class="tool-icon">▦</div><div><strong>Business Suite</strong><div class="tool-tag">BUILD YOUR BRAND</div></div></div>
+      <p>Business profiles, campaign tools and opportunities to connect with creators.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-top"><div class="tool-icon">◉</div><div><strong>Kinetic</strong><div class="tool-tag">PARTICIPATE · ACHIEVE</div></div></div>
+      <p>A participation and rewards experience designed around authentic activity.</p>
+    </div>
+    <div class="wave">
+      <svg viewBox="0 0 300 76" preserveAspectRatio="none">
+        <path d="M0 42 C35 4 65 4 100 42 S165 80 200 42 S265 4 300 42" fill="none" stroke="#36e5f5" stroke-width="2" opacity=".9"/>
+        <path d="M0 52 C35 14 65 14 100 52 S165 90 200 52 S265 14 300 52" fill="none" stroke="#a66bff" stroke-width="2" opacity=".8"/>
+      </svg>
+    </div>
+    <div class="footer-note">A new social experience, built around people, creativity and opportunity.</div>
+  </aside>
+</div>
+
+<nav class="mobile-nav">
+  <button class="active" data-page="Home"><span>⌂</span>Home</button>
+  <button data-page="Discover"><span>⌕</span>Discover</button>
+  <button class="create" data-page="Create" aria-label="Create">+</button>
+  <button data-page="Messages"><span>✉</span>Inbox</button>
+  <button data-page="Profile"><span>◎</span>Profile</button>
+</nav>
+
+<script>
+function selectPage(page) {
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+  document.getElementById("pageLabel").textContent =
+    page === "Home" ? "YOUR FEED · YOUR COMMUNITY" : page.toUpperCase();
+}
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => selectPage(button.dataset.page));
+});
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click", () => selectPage(button.dataset.go));
+});
+</script>
+</body>
+</html>
