@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050510">
+<title>FEEDSURGE — Your World. Your Momentum.</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<style>
+:root{
+  --bg:#050510;
+  --surface:#0c0c1d;
+  --panel:#14142a;
+  --panel2:#1a1834;
+  --line:#29294c;
+  --text:#fff;
+  --muted:#a1a1c5;
+  --cyan:#22d3ee;
+  --purple:#8b5cf6;
+  --pink:#ec4899;
+  --orange:#f97316;
+  --yellow:#facc15;
+  --grad:linear-gradient(110deg,#22d3ee,#8b5cf6,#ec4899);
+  --fire:linear-gradient(110deg,#f97316,#ef4444,#facc15);
+}
+*{box-sizing:border-box}
+html{min-height:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 8% 0%,#7c3aed24,transparent 34%),
+    radial-gradient(ellipse at 95% 12%,#f9731618,transparent 30%),
+    radial-gradient(ellipse at 50% 100%,#0891b218,transparent 42%),
+    var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+body.signed-out .shell,body.signed-out .mobile{
+  visibility:hidden!important;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+.hidden{display:none!important}
+.grad{
+  background:var(--grad);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.brand{
+  font-size:24px;
+  font-weight:950;
+  letter-spacing:-1.2px;
+  background:linear-gradient(90deg,#22d3ee,#8b5cf6,#f97316,#facc15);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.brand small{
+  display:block;
+  font-size:8px;
+  letter-spacing:2.8px;
+  color:var(--muted);
+  -webkit-text-fill-color:var(--muted);
+  margin-top:2px;
+}
+.top{
+  min-height:68px;
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px max(16px,calc((100vw - 1380px)/2));
+  background:#070713ed;
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid #29294c;
+}
+.searchtop,.field,textarea{
+  background:#090919;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:white;
+  padding:11px 13px;
+  outline:none;
+}
+.searchtop{width:min(280px,35vw);border-radius:24px}
+.searchtop:focus,.field:focus,textarea:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px #22d3ee18;
+}
+.avatar{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--grad);
+  color:#070713;
+  font-weight:900;
+  flex:none;
+  overflow:hidden;
+  border:1px solid #ffffff30;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.shell{
+  max-width:1380px;
+  margin:auto;
+  padding:20px 18px 110px;
+  display:grid;
+  grid-template-columns:205px minmax(0,700px) 245px;
+  gap:20px;
+}
+.side,.right{position:sticky;top:88px;align-self:start}
+.navlabel{
+  font-size:9px;
+  letter-spacing:2px;
+  color:#8989b2;
+  font-weight:900;
+  margin:17px 10px 8px;
+}
+.navbtn{
+  width:100%;
+  border:1px solid transparent;
+  background:transparent;
+  color:#b8b8d3;
+  padding:12px 11px;
+  border-radius:12px;
+  text-align:left;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:3px 0;
+  font-size:12px;
+  font-weight:700;
+}
+.navbtn.active,.navbtn:hover{
+  background:linear-gradient(100deg,#8b5cf62c,#22d3ee12);
+  border-color:#8b5cf64d;
+  color:white;
+}
+.navbtn.active{box-shadow:inset 3px 0 var(--cyan)}
+.note,.rightcard,.composer,.post,.panel,.tile{
+  background:linear-gradient(145deg,#17172e,#0d0d1e);
+  border:1px solid var(--line);
+  border-radius:17px;
+}
+.note,.rightcard{
+  padding:15px;
+  margin-top:15px;
+  font-size:11px;
+  line-height:1.7;
+  color:var(--muted);
+}
+.rightcard h3{font-size:13px}
+.rightcard p{font-size:11px;line-height:1.7;color:var(--muted)}
+.main{min-width:0}
+.view{display:none}
+.view.active{display:block}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:25px;
+  border:1px solid #8b5cf65c;
+  border-radius:22px;
+  background:
+    radial-gradient(ellipse at 88% 15%,#f9731638,transparent 35%),
+    radial-gradient(ellipse at 8% 100%,#22d3ee28,transparent 45%),
+    linear-gradient(140deg,#21133b,#111126 65%,#171126);
+  margin-bottom:18px;
+}
+.eyebrow{
+  font-size:9px;
+  letter-spacing:2.5px;
+  color:var(--orange);
+  font-weight:950;
+}
+.hero h1{
+  font-size:clamp(28px,4vw,40px);
+  line-height:1.08;
+  margin:12px 0;
+  letter-spacing:-1.4px;
+}
+.hero p,.intro p{
+  color:#b4b4d0;
+  line-height:1.65;
+  font-size:13px;
+}
+.btn{
+  border:1px solid var(--line);
+  background:#20203b;
+  color:#e9e9ff;
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:11px;
+  font-weight:800;
+}
+.btn:hover{border-color:var(--cyan)}
+.primary{
+  border:0;
+  background:var(--grad);
+  color:white;
+  font-weight:950;
+}
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:21px 2px 12px;
+}
+.head h2{font-size:16px;margin:0}
+.head span{font-size:10px;color:var(--muted)}
+.composer{padding:15px;margin-bottom:17px}
+.composer textarea{width:100%;min-height:75px;resize:vertical}
+  .actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:11px;
+}
+.post{padding:15px;margin-bottom:14px}
+.posthead{display:flex;align-items:center;gap:10px}
+.postname{font-weight:900;font-size:13px}
+.meta{font-size:10px;color:var(--muted);margin-top:3px}
+.postbody{
+  font-size:13px;
+  line-height:1.7;
+  color:#e0e0f4;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  margin:14px 0;
+}
+.postmedia{
+  width:100%;
+  max-height:540px;
+  object-fit:contain;
+  border-radius:13px;
+  background:#060610;
+  border:1px solid var(--line);
+  margin-top:8px;
+}
+.postactions{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap}
+.postactions button{
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:11px;
+  padding:5px 0;
+}
+.postactions button.liked,.postactions button:hover{color:var(--cyan)}
+.empty{
+  padding:28px 15px;
+  text-align:center;
+  border:1px dashed #7777a04d;
+  border-radius:15px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+.empty strong{display:block;color:white;font-size:15px;margin-bottom:7px}
+.intro{padding:19px 3px 13px}
+.intro h1{font-size:27px;margin:0 0 7px}
+.intro p{margin:0}
+.tile{padding:16px}
+.tile h3{font-size:13px;margin:8px 0}
+.tile p{font-size:11px;color:var(--muted);line-height:1.6;margin:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.creator,.conversation{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:var(--panel);
+  margin:8px 0;
+}
+.creatorinfo{min-width:0;flex:1;font-size:12px}
+.creatorinfo p{
+  font-size:10px;
+  color:var(--muted);
+  margin:4px 0 0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.profilehead{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:16px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  margin-bottom:14px;
+}
+.profilehead .avatar{width:62px;height:62px;font-size:22px}
+.label{display:block;font-size:10px;color:var(--muted);margin:9px 0 5px}
+.field{width:100%;font-size:13px}
+.loading{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+.toast{
+  position:fixed;
+  z-index:70;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:12px 16px;
+  background:#20203b;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-size:12px;
+  max-width:90vw;
+}
+.backdrop{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  background:#02020bf0;
+  display:grid;
+  place-items:center;
+  padding:16px;
+}
+.modal{
+  width:min(430px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#111126;
+  border:1px solid #39395f;
+  border-radius:20px;
+  padding:21px;
+}
+.modal h2{font-size:21px;margin:18px 0 7px}
+.modal p{font-size:12px;color:var(--muted);line-height:1.6}
+.modal .field{margin:6px 0}
+.mobile{display:none}
+
+/* FEEDSURGE signature energy */
+.surge-meter{
+  margin:10px 0 18px;
+  padding:15px;
+  border:1px solid #f9731680;
+  border-radius:17px;
+  background:
+    radial-gradient(ellipse at 95% 0%,#f9731630,transparent 45%),
+    linear-gradient(180deg,#21122b,#0d0d1d);
+  box-shadow:0 10px 35px #f9731610;
+}
+.meter-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  color:#fdba74;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.5px;
+}
+.meter-num{font-size:26px;font-weight:950;margin-top:5px}
+.meter-num span{color:var(--cyan)}
+.meter-caption{font-size:10px;color:var(--muted);margin-top:4px}
+.meter-bar{
+  height:10px;
+  background:#29233a;
+  border-radius:99px;
+  margin-top:11px;
+  overflow:hidden;
+}
+.meter-fill{
+  height:100%;
+  width:0;
+  border-radius:99px;
+  background:var(--fire);
+}
+.section-kicker{
+  font-size:10px;
+  color:#fdba74;
+  letter-spacing:2px;
+  font-weight:900;
+}
+.pill{
+  display:inline-block;
+  padding:7px 13px;
+  border-radius:99px;
+  background:#1e1e3a;
+  border:1px solid #39395f;
+  color:#d7d7f0;
+  font-size:11px;
+  margin:0 5px 10px 0;
+}
+.pill.active{background:#6d3ed1;border-color:#a78bfa;color:white}
+.hotspot{
+  background:linear-gradient(145deg,#19192f,#101020);
+  border:1px solid #343454;
+  padding:13px;
+  border-radius:15px;
+  margin-bottom:10px;
+}
+.hotspot h3{font-size:13px;margin:0 0 5px}
+.hotspot p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+.hotspot .hot{color:var(--orange);font-size:10px;font-weight:900}
+.tag{
+  display:inline-block;
+  color:#fdba74;
+  background:#f9731618;
+  border:1px solid #f9731640;
+  border-radius:99px;
+  padding:5px 9px;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+.map-frame{
+  height:390px;
+  min-height:300px;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#101020;
+}
+#surgeMap{height:100%;width:100%;background:#101020}
+.map-note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:9px}
+@media(max-width:1020px){
+  .shell{grid-template-columns:180px minmax(0,1fr);max-width:920px}
+  .right{display:none}
+}
+@media(max-width:680px){
+  .top{min-height:60px;padding:7px 13px}
+  .brand{font-size:21px}
+  .searchtop{display:none}
+  .shell{display:block;padding:12px 11px 105px}
+  .side{display:none}
+  .hero{padding:21px 17px}
+    .hero h1{font-size:30px}
+  .mobile{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:35;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+    background:#080813f7;
+    backdrop-filter:blur(20px);
+    border-top:1px solid var(--line);
+  }
+  .mobile button{
+    border:0;
+    background:none;
+    color:#9999b8;
+    font-size:9px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    padding:4px;
+    min-width:48px;
+  }
+  .mobile button span{font-size:19px}
+  .mobile button.active{color:var(--cyan)}
+  .mobile .create{
+    width:43px;
+    min-width:43px;
+    height:43px;
+    border-radius:15px;
+    background:var(--grad);
+    color:white;
+    font-size:22px;
+    margin-top:-18px;
+    box-shadow:0 5px 22px #8b5cf650;
+  }
+  .two{grid-template-columns:1fr 1fr}
+  .map-frame{height:340px}
+}
+@media(max-width:380px){
+  .two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body class="signed-out">
+
+<header class="top">
+  <div class="brand">⚡ FEEDSURGE
+    <small>YOUR WORLD. YOUR MOMENTUM.</small>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="localClock" aria-live="off" style="font-size:10px;line-height:1.4;text-align:right;color:var(--muted);min-width:105px">
+      <strong id="clockTime" style="display:block;color:white;font-size:12px">--:--</strong>
+      <span id="clockZone">Local time</span>
+    </div>
+    <input id="topSearch" class="searchtop" placeholder="Search FEEDSURGE">
+    <button id="headerAccount" class="avatar">F</button>
+  </div>
+</header>
+
+<div class="shell">
+
+  <aside class="side">
+    <div class="navlabel">YOUR WORLD</div>
+    <button class="navbtn active" data-view="home">⚡　Surge Feed</button>
+    <button class="navbtn" data-view="surgeMap">🌎　Surge Map</button>
+    <button class="navbtn" data-view="discover">⌕　Discover</button>
+    <button class="navbtn" data-view="communities">◉　Communities</button>
+    <button class="navbtn" data-view="messages">✉　Messages</button>
+    <button class="navbtn" data-view="activity">♢　Activity</button>
+
+    <div class="navlabel">CREATE & GROW</div>
+    <button class="navbtn" data-view="studio">✦　Creator Studio</button>
+    <button class="navbtn" data-view="growth">↗　Growth Intelligence</button>
+
+    <div class="navlabel">BUSINESS</div>
+    <button class="navbtn" data-view="business">▣　Business Hub</button>
+    <button class="navbtn" data-view="advertising">◈　Advertising</button>
+
+    <div class="navlabel">YOUR ACCOUNT</div>
+    <button class="navbtn" data-view="profile">◎　My Profile</button>
+    <button class="navbtn" data-view="settings">⚙　Settings</button>
+    <button class="navbtn" id="signOut">↪　Sign out</button>
+
+    <div class="note">
+      <strong style="color:white">THE FEEDSURGE PROMISE</strong>
+      <p>Real people. Real activity. Real opportunities. Paid promotion will be clearly identified and separate from organic discovery.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- HOME / SURGE FEED -->
+    <section class="view active" id="home">
+
+      <div class="hero">
+        <div class="eyebrow">⚡ THE NEXT WAVE STARTS HERE</div>
+        <h1>YOUR WORLD.<br><span class="grad">YOUR MOMENTUM.</span></h1>
+        <p>
+          Discover what's happening. Find your people.
+          Share your world. Make something happen.
+        </p>
+        <button class="btn primary" id="goDiscover">Explore FEEDSURGE →</button>
+      </div>
+
+      <div class="surge-meter">
+        <div class="meter-top">
+          <span>⚡ THE SURGE METER</span>
+          <span id="surgeMeterStatus">ACTIVITY DATA</span>
+        </div>
+        <div class="meter-num" id="surgeMeterNumber">
+          <span>—</span>
+        </div>
+        <div class="meter-caption" id="surgeMeterCaption">
+          Platform activity will appear when verified activity data is connected.
+        </div>
+        <div class="meter-bar">
+          <div class="meter-fill" id="surgeMeterFill"></div>
+        </div>
+      </div>
+
+      <div class="head">
+        <h2>What's moving right now?</h2>
+        <span>Explore the FEEDSURGE universe</span>
+      </div>
+
+      <div class="two">
+        <button class="tile" data-go-view="surgeMap" style="text-align:left;color:white;cursor:pointer">
+          <div class="grad" style="font-size:25px">🌎</div>
+          <h3>Surge Map</h3>
+          <p>Explore location-based posts and real activity around the world.</p>
+        </button>
+        <button class="tile" data-go-view="discover" style="text-align:left;color:white;cursor:pointer">
+          <div class="grad" style="font-size:25px">✦</div>
+          <h3>Discover</h3>
+          <p>Find creators, people, topics and new communities.</p>
+        </button>
+      </div>
+
+      <div class="head">
+        <h2>Share a Surge</h2>
+        <span>Your world deserves a voice</span>
+      </div>
+
+      <div class="composer">
+        <textarea id="postText" maxlength="3000" placeholder="What's happening in your world?"></textarea>
+
+        <div class="panel" style="padding:12px;margin-top:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <strong style="font-size:12px">📍 Add a location</strong>
+            <span style="font-size:10px;color:var(--muted)">Optional · You control what you share</span>
+          </div>
+
+          <div class="actions">
+            <input id="locationSearch" class="field" style="flex:1;min-width:150px" placeholder="Search a place or address">
+            <button class="btn" id="findLocation" type="button">Find place</button>
+            <button class="btn" id="useMyLocation" type="button">My location</button>
+          </div>
+
+          <div id="locationMap" style="height:180px;border-radius:12px;overflow:hidden;margin-top:10px;background:#0b0b1b"></div>
+          <div id="locationStatus" class="meta" aria-live="polite">Choose a place or use your current location.</div>
+
+          <div class="actions">
+            <span id="selectedLocation" style="font-size:11px;color:var(--cyan)">No location selected</span>
+            <button class="btn" id="clearLocation" type="button">Remove location</button>
+          </div>
+
+          <label style="display:flex;align-items:flex-start;gap:8px;font-size:10px;color:var(--muted);margin-top:8px">
+            <input id="approxLocation" type="checkbox" style="margin-top:2px">
+            Share an approximate area instead of the exact pin
+          </label>
+        </div>
+
+        <div class="actions">
+          <div>
+            <label class="btn" for="mediaFile">▧ Photo / Video</label>
+            <input id="mediaFile" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm" hidden>
+            <span id="fileName" style="font-size:10px;color:var(--muted)"></span>
+          </div>
+          <button class="btn primary" id="publish">⚡ Publish Surge</button>
+        </div>
+
+        <p style="font-size:10px;color:var(--muted);margin:9px 0 0">Photos and videos up to 100 MB.</p>
+
+        <label style="display:flex;gap:8px;align-items:flex-start;font-size:10px;color:var(--muted);margin-top:10px">
+          <input id="musicRights" type="checkbox" style="margin-top:2px">
+          <span>I confirm I own or have permission to use all audio and copyrighted material in this upload. FEEDSURGE does not provide or license music.</span>
+        </label>
+      </div>
+
+      <div class="head">
+        <h2>Your Surge Feed</h2>
+        <button class="btn" id="refreshFeed">Refresh</button>
+      </div>
+      <div id="feed" class="loading">Loading your feed…</div>
+    </section>
+
+    <!-- SURGE MAP -->
+    <section class="view" id="surgeMap">
+      <div class="intro">
+        <div class="eyebrow">🌎 EXPLORE THE WORLD</div>
+        <h1>The <span class="grad">Surge Map.</span></h1>
+        <p>Discover what's happening around you and explore activity from other places.</p>
+      </div>
+
+      <div class="surge-meter">
+        <div class="meter-top">
+          <span>⚡ MAP ACTIVITY</span>
+          <span>REAL DATA ONLY</span>
+        </div>
+        <div class="meter-caption">
+          Location-enabled posts and activity will appear here as map data becomes available.
+        </div>
+      </div>
+
+      <div class="actions">
+                <button class="pill active" data-map-filter="nearby">Nearby</button>
+        <button class="pill" data-map-filter="trending">Trending</button>
+        <button class="pill" data-map-filter="events">Events</button>
+        <button class="pill" data-map-filter="places">Places</button>
+      </div>
+
+      <div class="map-frame">
+        <div id="surgeMapCanvas"></div>
+      </div>
+
+      <p class="map-note">
+        Map pins will represent posts whose creators chose to share a location.
+        Location visibility and precision must respect each member's privacy settings.
+      </p>
+
+      <div class="head">
+        <h2>Surge Hotspots</h2>
+        <span>Verified activity only</span>
+      </div>
+      <div id="surgeHotspots" class="empty">
+        <strong>Hotspots will appear here.</strong>
+        No invented activity or fabricated trending numbers.
+      </div>
+    </section>
+
+    <!-- DISCOVER -->
+    <section class="view" id="discover">
+      <div class="intro">
+        <div class="eyebrow">FIND YOUR NEXT CONNECTION</div>
+        <h1>Discover <span class="grad">what's next.</span></h1>
+        <p>Find real creators and people who share your interests.</p>
+      </div>
+
+      <div class="composer">
+        <input id="discoverQuery" class="field" placeholder="Search usernames or names">
+        <div class="actions">
+          <span style="font-size:10px;color:var(--muted)">Search real members</span>
+          <button class="btn primary" id="searchButton">Search</button>
+        </div>
+      </div>
+      <div id="searchResults" class="empty">Search for a creator to find your next connection.</div>
+    </section>
+
+    <!-- COMMUNITIES -->
+    <section class="view" id="communities">
+      <div class="intro">
+        <div class="eyebrow">FIND YOUR PEOPLE</div>
+        <h1>Your <span class="grad">Communities.</span></h1>
+        <p>Spaces built around shared interests, local activity and things people care about.</p>
+      </div>
+      <div id="communityContent" class="empty">
+        <strong>Community discovery is being built.</strong>
+        This section is reserved for real community creation, membership, posts and moderation—not pretend groups.
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section class="view" id="messages">
+      <div class="intro">
+        <h1>Your <span class="grad">Messages.</span></h1>
+        <p>Private conversations with people in your network.</p>
+      </div>
+      <div id="conversations" class="loading">Loading conversations…</div>
+
+      <div id="messagePanel" class="panel hidden" style="padding:14px;margin-top:12px">
+        <div class="head">
+          <h2>Conversation</h2>
+          <button class="btn" id="closeConversation">Close</button>
+        </div>
+        <div id="messageList" style="max-height:45vh;overflow:auto"></div>
+        <div class="actions">
+          <input id="messageInput" class="field" placeholder="Write a message…">
+          <button id="sendMessage" class="btn primary">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section class="view" id="activity">
+      <div class="intro">
+        <div class="eyebrow">YOUR WORLD IS MOVING</div>
+        <h1>Your <span class="grad">Activity.</span></h1>
+        <p>Keep track of meaningful interactions and updates across your network.</p>
+      </div>
+      <div id="activityContent" class="empty">
+        <strong>Your activity will appear here.</strong>
+        Notifications and interaction history will be connected to verified platform events.
+      </div>
+    </section>
+
+    <!-- CREATOR STUDIO -->
+    <section class="view" id="studio">
+      <div class="intro">
+        <div class="eyebrow">MAKE SOMETHING HAPPEN</div>
+        <h1>Creator <span class="grad">Studio.</span></h1>
+        <p>Your publishing workspace and home for creator tools.</p>
+      </div>
+
+      <div class="two">
+        <div class="tile">
+          <div class="grad" style="font-size:24px">▧</div>
+          <h3>Publishing</h3>
+          <p>Share text, photos and videos with your audience.</p>
+        </div>
+        <div class="tile">
+          <div class="grad" style="font-size:24px">◎</div>
+          <h3>Your portfolio</h3>
+          <p>Your profile collects the content you publish.</p>
+        </div>
+        <div class="tile">
+          <div class="grad" style="font-size:24px">↗</div>
+          <h3>Creator growth</h3>
+          <p>Tools to understand your audience and improve your work.</p>
+        </div>
+        <div class="tile">
+          <div class="grad" style="font-size:24px">✦</div>
+          <h3>Opportunities</h3>
+          <p>A future home for brand partnerships and creator opportunities.</p>
+        </div>
+      </div>
+
+      <div class="head">
+        <h2>Your recent posts</h2>
+        <button class="btn" id="studioRefresh">Refresh</button>
+      </div>
+      <div id="studioPosts" class="loading">Loading…</div>
+    </section>
+
+    <!-- GROWTH -->
+    <section class="view" id="growth">
+      <div class="intro">
+        <div class="eyebrow">BUILD YOUR MOMENTUM</div>
+        <h1>Growth <span class="grad">Intelligence.</span></h1>
+        <p>Build reach through useful content, consistency and authentic connections.</p>
+      </div>
+      <div class="two">
+        <div class="tile">
+          <div class="grad">↗</div>
+          <h3>Organic discovery</h3>
+          <p>Members can publish and be discovered. Payment does not buy organic rank.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">✦</div>
+          <h3>Creator fundamentals</h3>
+          <p>Share consistently, understand your audience and build genuine community.</p>
+        </div>
+      </div>
+      <div class="empty" style="margin-top:14px">
+        <strong>Real numbers only.</strong>
+        Analytics will appear when verified audience and engagement events are available. No fabricated views, earnings or growth projections.
+      </div>
+    </section>
+
+    <!-- BUSINESS HUB -->
+    <section class="view" id="business">
+      <div class="intro">
+        <div class="eyebrow">FOR BUSINESSES & ORGANIZATIONS</div>
+        <h1>Business <span class="grad">Hub.</span></h1>
+        <p>A future workspace for businesses to build their presence and connect with real customers.</p>
+      </div>
+      <div class="two">
+        <div class="tile">
+          <div class="grad">▣</div>
+          <h3>Business profiles</h3>
+          <p>Showcase your brand, locations, products, services and updates.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">📍</div>
+          <h3>Local discovery</h3>
+          <p>Help people discover real businesses and places around them.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">✦</div>
+          <h3>Offers & events</h3>
+          <p>Build ways to share promotions, offers and events with your audience.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">▤</div>
+          <h3>Business insights</h3>
+          <p>Understand verified campaign and audience performance.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVERTISING -->
+    <section class="view" id="advertising">
+      <div class="intro">
+        <div class="eyebrow">BRANDS. BUSINESSES. OPPORTUNITY.</div>
+        <h1>FEEDSURGE <span class="grad">Advertising.</span></h1>
+        <p>A dedicated advertising ecosystem designed to connect advertisers with relevant audiences.</p>
+      </div>
+      <div class="two">
+        <div class="tile">
+          <div class="grad">◈</div>
+          <h3>Campaign management</h3>
+          <p>Campaign creation, creative management and performance tracking.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">◎</div>
+          <h3>Audience tools</h3>
+          <p>Privacy-conscious targeting and audience controls.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">↗</div>
+          <h3>Sponsored discovery</h3>
+          <p>Clearly labeled paid placements kept separate from organic ranking.</p>
+        </div>
+        <div class="tile">
+          <div class="grad">▤</div>
+          <h3>Campaign reporting</h3>
+          <p>Verified impressions, engagement and conversion reporting.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="view" id="profile">
+      <div class="intro">
+        <h1>Your <span class="grad">Profile.</span></h1>
+        <p>Your identity and the work you share with the community.</p>
+              </div>
+      <div id="profileCard" class="loading">Loading profile…</div>
+
+      <div class="panel" style="padding:15px;margin-bottom:14px">
+        <h3 style="font-size:14px;margin:0">Edit profile</h3>
+        <label class="label" for="editDisplay">Display name</label>
+        <input id="editDisplay" class="field" maxlength="60">
+        <label class="label" for="editUsername">Username</label>
+        <input id="editUsername" class="field" maxlength="24">
+        <label class="label" for="editBio">Bio</label>
+        <textarea id="editBio" class="field" maxlength="500" rows="3"></textarea>
+        <button id="saveProfile" class="btn primary" style="margin-top:10px">Save profile</button>
+      </div>
+
+      <div class="head">
+        <h2>Your posts</h2>
+        <button class="btn" id="profileRefresh">Refresh</button>
+      </div>
+      <div id="profilePosts" class="loading">Loading posts…</div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="settings">
+      <div class="intro">
+        <div class="eyebrow">YOUR ACCOUNT. YOUR CONTROL.</div>
+        <h1>Settings <span class="grad">& Privacy.</span></h1>
+        <p>Manage your account, privacy and experience.</p>
+      </div>
+      <div class="two">
+        <div class="tile"><h3>Account & security</h3><p>Account access, password and sign-in security.</p></div>
+        <div class="tile"><h3>Privacy</h3><p>Profile visibility and location-sharing preferences.</p></div>
+        <div class="tile"><h3>Notifications</h3><p>Control the updates you receive.</p></div>
+        <div class="tile"><h3>Content preferences</h3><p>Manage what you see and discover.</p></div>
+        <div class="tile"><h3>Safety & blocking</h3><p>Reporting, blocking and community protections.</p></div>
+        <div class="tile"><h3>Policies & guidelines</h3><p>Community standards, terms and privacy information.</p></div>
+      </div>
+      <div class="empty" style="margin-top:14px">
+        <strong>Account controls are being expanded.</strong>
+        We will connect these controls to real saved settings before presenting them as functional.
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="right">
+    <div class="rightcard">
+      <h3 style="color:white;margin:0 0 8px">⚡ THE FEEDSURGE UNIVERSE</h3>
+      <span class="tag">BUILT FOR MOMENTUM</span>
+      <p>A social platform where everyday members can create, connect, discover and grow.</p>
+    </div>
+    <div class="rightcard">
+      <h3 style="color:white;margin:0">Our promise</h3>
+      <p>Organic discovery is based on real content and audience signals. Paid placements will be clearly labeled and separate from organic ranking.</p>
+    </div>
+    <div class="rightcard">
+      <h3 style="color:white;margin:0">Your account</h3>
+      <p id="accountSummary">Sign in to publish and connect.</p>
+    </div>
+  </aside>
+
+</div>
+
+<!-- MOBILE NAVIGATION -->
+<nav class="mobile">
+  <button class="active" data-view="home"><span>⚡</span>Home</button>
+  <button data-view="surgeMap"><span>🌎</span>Map</button>
+  <button class="create" id="mobileCreate">＋</button>
+  <button data-view="activity"><span>♢</span>Activity</button>
+  <button data-view="profile"><span>◎</span>Profile</button>
+</nav>
+
+<!-- AUTHENTICATION -->
+<div id="authGate" class="backdrop">
+  <div class="modal">
+    <div class="brand">⚡ FEEDSURGE</div>
+    <h2 id="authTitle">Welcome to your world.</h2>
+    <p id="authCopy">Sign in to connect, create and build momentum.</p>
+
+    <form id="authForm">
+      <input id="authUsername" class="field hidden" placeholder="Choose a username" maxlength="24" autocomplete="username">
+
+      <label id="birthdayLabel" class="label hidden" for="authBirthday">Date of birth · Required for age verification</label>
+      <input id="authBirthday" class="field hidden" type="date" autocomplete="bday" aria-label="Date of birth">
+
+      <p id="ageNotice" class="hidden" style="font-size:10px;color:var(--muted);margin:4px 0 8px">
+        You must meet FEEDSURGE’s minimum age requirement. Your full birthday is not displayed publicly.
+      </p>
+
+      <input id="authEmail" class="field" type="email" placeholder="Email address" required>
+      <input id="authPassword" class="field" type="password" placeholder="Password (8+ characters)" minlength="8" required>
+
+      <div class="actions">
+        <button id="authSubmit" class="btn primary" type="submit">Sign in</button>
+        <button id="toggleAuth" class="btn" type="button">Create account</button>
+      </div>
+    </form>
+
+    <button id="forgot" class="btn" style="margin-top:10px;border:0;background:none;padding-left:0">Forgot password?</button>
+    <p id="authMessage" aria-live="polite"></p>
+  </div>
+</div>
+
+<!-- COMMENTS -->
+<div id="commentModal" class="backdrop hidden">
+  <div class="modal">
+    <div class="head">
+      <h2>Comments</h2>
+      <button id="closeComments" class="btn">Close</button>
+    </div>
+    <div id="commentsList"></div>
+    <div class="actions">
+      <input id="commentInput" class="field" placeholder="Write a comment…" maxlength="1000">
+      <button id="sendComment" class="btn primary">Send</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden" role="status"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script type="module">
+import {register,login,currentUser,logout,isSignedIn} from "./feedsurge-app/auth.js";
+import {apiGet,apiPost,apiPatch} from "./feedsurge-app/api.js";
+
+const $=id=>document.getElementById(id);
+let account=null,profile=null,mode="login",file=null,conversationId=null,commentPost=null,selectedPlace=null,map=null,mapMarker=null;
+
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const url=s=>{try{let u=new URL(s);return ["https:","http:"].includes(u.protocol)?u.href:""}catch{return ""}};
+
+function toast(s){
+  $("toast").textContent=s;
+  $("toast").classList.remove("hidden");
+  clearTimeout(toast.t);
+  toast.t=setTimeout(()=>$("toast").classList.add("hidden"),3000);
+}
+
+function avatar(p={}){
+  let src=url(p.avatar_url);
+  return `<div class="avatar">${src?`<img src="${esc(src)}" alt="">`:esc((p.display_name||p.username||"F").slice(0,2).toUpperCase())}</div>`;
+}
+
+function view(id){
+  document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===id));
+  document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===id));
+  scrollTo({top:0,behavior:"smooth"});
+  if(id==="home")feed();
+  if(id==="messages")conversations();
+  if(id==="profile")loadProfile();
+  if(id==="studio")loadStudio();
+}
+
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>view(b.dataset.view));
+document.querySelectorAll("[data-go-view]").forEach(b=>b.onclick=()=>view(b.dataset.goView));
+
+$("goDiscover").onclick=()=>view("discover");
+$("mobileCreate").onclick=()=>{view("home");$("postText").focus()};
+$("headerAccount").onclick=()=>view("profile");
+
+$("topSearch").onkeydown=e=>{
+  if(e.key==="Enter"){
+    $("discoverQuery").value=e.target.value;
+    view("discover");
+    search();
+  }
+};
+
+function authMode(m){
+  mode=m;
+  $("authUsername").classList.toggle("hidden",m!=="register");
+  $("birthdayLabel").classList.toggle("hidden",m!=="register");
+  $("authBirthday").classList.toggle("hidden",m!=="register");
+  $("ageNotice").classList.toggle("hidden",m!=="register");
+  $("authTitle").textContent=m==="register"?"Create your FEEDSURGE account.":"Welcome to your world.";
+  $("authCopy").textContent=m==="register"?"Verify your age, choose your username and join the community.":"Sign in to connect, create and build momentum.";
+  $("authSubmit").textContent=m==="register"?"Create account":"Sign in";
+  $("toggleAuth").textContent=m==="register"?"I already have an account":"Create account";
+  $("forgot").classList.toggle("hidden",m!=="login");
+  $("authMessage").textContent="";
+  $("authBirthday").max=new Date().toISOString().slice(0,10);
+}
+
+$("toggleAuth").onclick=()=>authMode(mode==="login"?"register":"login");
+
+$("authForm").onsubmit=async e=>{
+  e.preventDefault();
+  let b=$("authSubmit");
+  b.disabled=true;
+  $("authMessage").textContent="Please wait…";
+  try{
+    if(mode==="register"){
+      let birthday=$("authBirthday").value;
+      if(!birthday)throw Error("Enter your date of birth to create an account.");
+      let born=new Date(birthday+"T00:00:00"),today=new Date();
+      let age=today.getFullYear()-born.getFullYear()-((today.getMonth()<born.getMonth()||(today.getMonth()===born.getMonth()&&today.getDate()<born.getDate()))?1:0);
+      if(!Number.isFinite(age)||born>today||age<13)throw Error("You must be at least 13 years old to create a FEEDSURGE account.");
+      if(!$("authUsername").value.trim())throw Error("Choose a username.");
+      let r=await register({
+        email:$("authEmail").value,
+        password:$("authPassword").value,
+        username:$("authUsername").value,
+        birthday
+      });
+      if(r.confirmationRequired){
+        $("authMessage").textContent="Account created. Check your email to confirm your address, then return here and sign in.";
+        return;
+      }
+    }else{
+      await login({email:$("authEmail").value,password:$("authPassword").value});
+    }
+    await boot();
+  }catch(err){
+    $("authMessage").textContent=err.message||"Authentication failed.";
+  }finally{
+    b.disabled=false;
+  }
+};
+
+$("forgot").onclick=async()=>{
+  let email=$("authEmail").value.trim();
+  if(!email){
+    $("authMessage").textContent="Enter your email address first.";
+    return;
+  }
+  try{
+    await apiPost("/api/auth/forgot-password",{email});
+    $("authMessage").textContent="If the account exists, a reset email has been sent.";
+  }catch(e){
+    $("authMessage").textContent=e.message;
+  }
+};
+      $("authMessage").textContent="Enter your email address first.";
+    return;
+  }
+  try{
+    await apiPost("/api/auth/forgot-password",{email});
+    $("authMessage").textContent="If the account exists, a reset email has been sent.";
+  }catch(e){
+    $("authMessage").textContent=e.message;
+  }
+};
+
+async function boot(){
+  try{
+    if(!isSignedIn()){
+      document.body.classList.add("signed-out");
+      $("authGate").classList.remove("hidden");
+      return;
+    }
+    let r=await currentUser();
+    if(!r?.user)throw Error("Please sign in again.");
+    account=r.user;
+    profile=r.profile||{};
+    document.body.classList.remove("signed-out");
+    $("authGate").classList.add("hidden");
+    initLocationMap();
+    $("headerAccount").innerHTML=avatar(profile);
+    $("accountSummary").textContent=(profile.display_name||profile.username||account.email)+" · Free member";
+    await feed();
+  }catch(e){
+    document.body.classList.add("signed-out");
+    $("authGate").classList.remove("hidden");
+    $("authMessage").textContent=e.message;
+  }
+}
+
+function card(p){
+  let a=p.author||{},media=url(p.media_url),date=p.created_at?new Date(p.created_at).toLocaleString():"";
+  let visual=media?(p.media_type==="video"?`<video class="postmedia" src="${esc(media)}" controls playsinline preload="metadata"></video>`:`<img class="postmedia" src="${esc(media)}" alt="Post media" loading="lazy">`):"";
+  return `<article class="post" data-post="${esc(p.id)}">
+    <div class="posthead">
+      ${avatar(a)}
+      <div>
+        <div class="postname">${esc(a.display_name||a.username||"FEEDSURGE member")}</div>
+        <div class="meta">${esc(a.username?"@"+a.username:"Member")} · ${esc(date)}</div>
+      </div>
+    </div>
+    ${p.body?`<div class="postbody">${esc(p.body)}</div>`:""}
+    ${visual}
+    <div class="postactions">
+      <button class="${p.viewer_liked?"liked":""}" data-action="like">${p.viewer_liked?"♥ Liked":"♡ Like"} · ${Number(p.like_count||0)}</button>
+      <button data-action="comments">Comment · ${Number(p.comment_count||0)}</button>
+      <button data-action="message" data-user="${esc(p.user_id)}">Message creator</button>
+    </div>
+  </article>`;
+}
+
+function bindCards(root){
+  root.querySelectorAll("[data-action]").forEach(b=>b.onclick=async()=>{
+    let id=b.closest("[data-post]")?.dataset.post;
+    if(!id)return;
+    if(!account){
+      toast("Sign in to interact with posts.");
+      return;
+    }
+    try{
+      if(b.dataset.action==="like"){
+        let r=await apiPost(`/api/posts/${id}/like`,{});
+        let n=Number((b.textContent.match(/(\d+)/)||[])[1]||0)+(r.liked?1:-1);
+        b.classList.toggle("liked",r.liked);
+        b.textContent=`${r.liked?"♥ Liked":"♡ Like"} · ${Math.max(0,n)}`;
+      }else if(b.dataset.action==="comments"){
+        openComments(id);
+      }else{
+        let r=await apiPost("/api/messages/conversations",{user_id:b.dataset.user});
+        view("messages");
+        openConversation(r.conversation.id);
+      }
+    }catch(e){
+      toast(e.message);
+    }
+  });
+}
+
+async function feed(){
+  let t=$("feed");
+  t.className="loading";
+  t.textContent="Loading your feed…";
+  try{
+    let r=await apiGet("/api/social/feed?limit=40"),posts=r.posts||[];
+    if(!posts.length){
+      t.className="empty";
+      t.innerHTML="<strong>Your feed starts with your people.</strong>Be one of the first to share something, or discover creators and follow them.";
+      return;
+    }
+    t.className="";
+    t.innerHTML=posts.map(card).join("");
+    bindCards(t);
+  }catch(e){
+    t.className="empty";
+    t.textContent=e.message;
+  }
+}
+
+$("refreshFeed").onclick=feed;
+
+$("mediaFile").onchange=e=>{
+  file=e.target.files?.[0]||null;
+  $("fileName").textContent=file?` ${file.name} · ${(file.size/1048576).toFixed(1)} MB`:"";
+  if(file&&file.size>104857600){
+    toast("Choose a file no larger than 100 MB.");
+    file=null;
+    e.target.value="";
+    $("fileName").textContent="";
+  }
+};
+
+$("publish").onclick=async()=>{
+  const body=$("postText").value.trim();
+  if(!body&&!file){
+    toast("Write something or attach a photo/video first.");
+    return;
+  }
+  if(file&&!$("musicRights").checked){
+    toast("Confirm you have the rights to all audio and copyrighted material in this upload.");
+    return;
+  }
+  const b=$("publish");
+  b.disabled=true;
+  b.textContent="Publishing…";
+  try{
+    if(file){
+      const type=file.type;
+      const signed=await apiPost("/api/uploads/presign",{
+        filename:file.name,
+        contentType:type,
+        sizeBytes:file.size
+      });
+      if(!signed?.uploadUrl||!signed?.publicUrl||!signed?.key)throw Error("The media upload service did not return a valid upload address.");
+      const put=await fetch(signed.uploadUrl,{method:"PUT",headers:{"Content-Type":type},body:file});
+      if(!put.ok)throw Error("Media upload failed ("+put.status+").");
+      await apiPost("/api/media",{
+        media_url:signed.publicUrl,
+        object_key:signed.key,
+        caption:body,
+        media_type:type.startsWith("video/")?"video":"photo",
+        content_type:type,
+        size_bytes:file.size
+      });
+    }else{
+      await apiPost("/api/social/text",{body});
+    }
+    $("postText").value="";
+    $("musicRights").checked=false;
+    $("mediaFile").value="";
+    $("fileName").textContent="";
+    file=null;
+    toast("Your post is live.");
+    await feed();
+    if(account)await loadProfile();
+  }catch(e){
+    toast(e.message||"Could not publish your post.");
+  }finally{
+    b.disabled=false;
+    b.textContent="⚡ Publish Surge";
+  }
+};
+
+async function search(){
+  let q=$("discoverQuery").value.trim(),t=$("searchResults");
+  if(q.length<2){
+    t.className="empty";
+    t.textContent="Enter at least 2 characters to search.";
+    return;
+  }
+  t.className="loading";
+  t.textContent="Searching members…";
+  try{
+    let r=await apiGet(`/api/search?q=${encodeURIComponent(q)}`),list=r.creators||[];
+    if(!list.length){
+      t.className="empty";
+      t.textContent="No matching members yet. Try another name or username.";
+      return;
+    }
+    t.className="";
+    t.innerHTML=list.map(p=>`<div class="creator">
+      ${avatar(p)}
+      <div class="creatorinfo">
+        <strong>${esc(p.display_name||p.username||"Member")}</strong>
+        <p>@${esc(p.username||"member")} · ${esc(p.bio||"FEEDSURGE member")}</p>
+      </div>
+      <button class="btn" data-follow="${esc(p.id)}">${p.is_following?"Following":"Follow"}</button>
+      <button class="btn" data-message="${esc(p.id)}">Message</button>
+    </div>`).join("");
+    t.querySelectorAll("[data-follow]").forEach(b=>b.onclick=async()=>{
+      try{
+        let r=await apiPost(`/api/follows/${b.dataset.follow}/toggle`,{});
+        b.textContent=r.following?"Following":"Follow";
+      }catch(e){
+        toast(e.message);
+      }
+    });
+    t.querySelectorAll("[data-message]").forEach(b=>b.onclick=async()=>{
+      try{
+        let r=await apiPost("/api/messages/conversations",{user_id:b.dataset.message});
+        view("messages");
+        openConversation(r.conversation.id);
+      }catch(e){
+        toast(e.message);
+      }
+    });
+  }catch(e){
+    t.className="empty";
+    t.textContent=e.message;
+  }
+}
+
+$("searchButton").onclick=search;
+$("discoverQuery").onkeydown=e=>{
+  if(e.key==="Enter")search();
+};
+  async function conversations(){
+  let t=$("conversations");
+  t.className="loading";
+  t.textContent="Loading conversations…";
+  try{
+    let r=await apiGet("/api/messages/conversations"),list=r.conversations||[];
+    if(!list.length){
+      t.className="empty";
+      t.innerHTML="<strong>No conversations yet.</strong>Find a creator in Discover and choose Message.";
+      return;
+    }
+    t.className="";
+    t.innerHTML=list.map(c=>`<button class="conversation" style="width:100%;text-align:left;color:inherit" data-conversation="${esc(c.id)}">
+      ${avatar(c.other_user||{})}
+      <span class="creatorinfo">
+        <strong>${esc(c.other_user?.display_name||c.other_user?.username||"Member")}</strong>
+        <p>Open conversation</p>
+      </span>›
+    </button>`).join("");
+    t.querySelectorAll("[data-conversation]").forEach(b=>b.onclick=()=>openConversation(b.dataset.conversation));
+  }catch(e){
+    t.className="empty";
+    t.textContent=e.message;
+  }
+}
+
+async function openConversation(id){
+  conversationId=id;
+  $("messagePanel").classList.remove("hidden");
+  await messages();
+}
+
+async function messages(){
+  let r=await apiGet(`/api/messages/${conversationId}`);
+  $("messageList").innerHTML=(r.messages||[]).map(m=>`<div style="padding:9px 11px;margin:7px 0;border-radius:11px;background:${m.sender_id===account?.id?"#36e5f41a":"#1a2440"};font-size:12px;max-width:90%;margin-left:${m.sender_id===account?.id?"auto":"0"}">
+    ${esc(m.body)}
+    <div class="meta">${esc(new Date(m.created_at).toLocaleString())}</div>
+  </div>`).join("")||"<div class='empty'>Say hello and start the conversation.</div>";
+  $("messageList").scrollTop=$("messageList").scrollHeight;
+}
+
+$("sendMessage").onclick=async()=>{
+  let body=$("messageInput").value.trim();
+  if(!body||!conversationId)return;
+  try{
+    await apiPost(`/api/messages/${conversationId}`,{body});
+    $("messageInput").value="";
+    await messages();
+  }catch(e){
+    toast(e.message);
+  }
+};
+
+$("messageInput").onkeydown=e=>{
+  if(e.key==="Enter")$("sendMessage").click();
+};
+
+$("closeConversation").onclick=()=>{
+  $("messagePanel").classList.add("hidden");
+  conversationId=null;
+};
+
+async function profileLoad(){
+  if(!account)return;
+  try{
+    let r=await apiGet(`/api/creators/${account.id}`);
+    profile=r.creator||profile||{};
+    $("profileCard").className="profilehead";
+    $("profileCard").innerHTML=`${avatar(profile)}
+      <div>
+        <strong style="font-size:17px">${esc(profile.display_name||profile.username||"Your profile")}</strong>
+        <div class="meta">@${esc(profile.username||"member")} · ${esc(account.email||"")}</div>
+        <div class="meta">${esc(profile.bio||"Add a bio to tell people about yourself.")}</div>
+      </div>`;
+    $("editDisplay").value=profile.display_name||"";
+    $("editUsername").value=profile.username||"";
+    $("editBio").value=profile.bio||"";
+    renderList("profilePosts",r.posts||[]);
+  }catch(e){
+    $("profileCard").className="empty";
+    $("profileCard").textContent=e.message;
+  }
+}
+
+async function loadProfile(){
+  await profileLoad();
+}
+
+async function loadStudio(){
+  if(!account)return;
+  try{
+    let r=await apiGet(`/api/creators/${account.id}`);
+    renderList("studioPosts",r.posts||[]);
+  }catch(e){
+    $("studioPosts").className="empty";
+    $("studioPosts").textContent=e.message;
+  }
+}
+
+function renderList(id,posts){
+  let t=$(id);
+  if(!posts.length){
+    t.className="empty";
+    t.innerHTML="<strong>Your first post is waiting.</strong>Share something from Home and it will appear here.";
+    return;
+  }
+  t.className="";
+  t.innerHTML=posts.map(card).join("");
+  bindCards(t);
+}
+
+$("saveProfile").onclick=async()=>{
+  try{
+    let r=await apiPatch("/api/profile",{
+      display_name:$("editDisplay").value,
+      username:$("editUsername").value,
+      bio:$("editBio").value
+    });
+    profile=r.profile;
+    toast("Profile saved.");
+    await profileLoad();
+    $("headerAccount").innerHTML=avatar(profile);
+  }catch(e){
+    toast(e.message);
+  }
+};
+
+$("profileRefresh").onclick=loadProfile;
+$("studioRefresh").onclick=loadStudio;
+
+async function openComments(id){
+  commentPost=id;
+  $("commentModal").classList.remove("hidden");
+  $("commentsList").innerHTML="<div class='loading'>Loading comments…</div>";
+  try{
+    let r=await apiGet(`/api/posts/${id}/comments`);
+    $("commentsList").innerHTML=(r.comments||[]).map(c=>`<div style="padding:10px 0;border-bottom:1px solid var(--line);font-size:12px">
+      <strong>${esc(c.author?.display_name||c.author?.username||"Member")}</strong>
+      <p style="color:#d5def1;line-height:1.6">${esc(c.body)}</p>
+      <small class="meta">${esc(new Date(c.created_at).toLocaleString())}</small>
+    </div>`).join("")||"<div class='empty'>No comments yet. Start the conversation.</div>";
+  }catch(e){
+    $("commentsList").textContent=e.message;
+  }
+}
+
+$("closeComments").onclick=()=>$("commentModal").classList.add("hidden");
+
+$("sendComment").onclick=async()=>{
+  let body=$("commentInput").value.trim();
+  if(!body||!commentPost)return;
+  try{
+    await apiPost(`/api/posts/${commentPost}/comments`,{body});
+    $("commentInput").value="";
+    await openComments(commentPost);
+    await feed();
+  }catch(e){
+    toast(e.message);
+  }
+};
+
+async function signOut(){
+  try{
+    await logout();
+  }catch{}
+  account=null;
+  profile=null;
+  document.body.classList.add("signed-out");
+  $("authGate").classList.remove("hidden");
+  authMode("login");
+  toast("Signed out.");
+}
+
+$("signOut").onclick=signOut;
+
+// Visitor-local clock: browser timezone, including daylight-saving changes.
+function updateLocalClock(){
+  const now=new Date(),zone=Intl.DateTimeFormat().resolvedOptions().timeZone||"Local time";
+  $("clockTime").textContent=new Intl.DateTimeFormat(undefined,{hour:"numeric",minute:"2-digit",second:"2-digit"}).format(now);
+  $("clockZone").textContent=zone+" · "+new Intl.DateTimeFormat(undefined,{weekday:"short",month:"short",day:"numeric"}).format(now);
+}
+
+updateLocalClock();
+setInterval(updateLocalClock,1000);
+
+// Location picker uses OpenStreetMap tiles and Nominatim search; browser location is opt-in.
+function setPlace(name,lat,lng){
+  selectedPlace={name:String(name||"Pinned location"),lat:Number(lat),lng:Number(lng)};
+  if(map){
+    if(!mapMarker)mapMarker=L.marker([lat,lng],{draggable:true}).addTo(map);
+    else mapMarker.setLatLng([lat,lng]);
+    map.setView([lat,lng],15);
+    mapMarker.off("dragend").on("dragend",()=>{
+      let q=mapMarker.getLatLng();
+      setPlace(selectedPlace.name,q.lat,q.lng);
+    });
+  }
+  $("selectedLocation").textContent=selectedPlace.name;
+  $("locationStatus").textContent=`Pin: ${lat.toFixed(5)}, ${lng.toFixed(5)} · Drag to adjust`;
+}
+  function initLocationMap(){
+  if(!window.L||map)return;
+  map=L.map("locationMap").setView([39.0,-96.0],4);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    maxZoom:19,
+    attribution:"© OpenStreetMap contributors"
+  }).addTo(map);
+  map.on("click",async e=>{
+    let {lat,lng}=e.latlng;
+    setPlace("Dropped pin",lat,lng);
+    try{
+      let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+      let j=await r.json();
+      if(j.display_name)setPlace(j.name||j.display_name.split(",")[0],lat,lng);
+    }catch{}
+  });
+}
+
+async function findPlace(){
+  let q=$("locationSearch").value.trim();
+  if(!q){
+    $("locationStatus").textContent="Enter a restaurant, venue or address.";
+    return;
+  }
+  $("locationStatus").textContent="Searching places…";
+  try{
+    let r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=${encodeURIComponent(q)}`);
+    let items=await r.json();
+    if(!items.length)throw Error("No matching places found.");
+    let x=items[0];
+    setPlace(x.name||x.display_name.split(",")[0],Number(x.lat),Number(x.lon));
+    $("locationStatus").textContent=`Pin: ${Number(x.lat).toFixed(5)}, ${Number(x.lon).toFixed(5)} · ${x.display_name}`;
+  }catch(e){
+    $("locationStatus").textContent=e.message||"Place search failed.";
+  }
+}
+
+$("findLocation").onclick=findPlace;
+
+$("locationSearch").onkeydown=e=>{
+  if(e.key==="Enter"){
+    e.preventDefault();
+    findPlace();
+  }
+};
+
+$("useMyLocation").onclick=()=>{
+  if(!navigator.geolocation){
+    $("locationStatus").textContent="Location services are unavailable in this browser.";
+    return;
+  }
+  $("locationStatus").textContent="Requesting permission…";
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    let {latitude:lat,longitude:lng}=pos.coords;
+    let name="My selected location";
+    try{
+      let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+      let j=await r.json();
+      name=j.name||j.display_name?.split(",")[0]||name;
+    }catch{}
+    setPlace(name,lat,lng);
+  },err=>{
+    $("locationStatus").textContent=err.message||"Could not access your location.";
+  },{
+    enableHighAccuracy:false,
+    timeout:10000,
+    maximumAge:60000
+  });
+};
+
+$("clearLocation").onclick=()=>{
+  selectedPlace=null;
+  if(mapMarker){
+    map.removeLayer(mapMarker);
+    mapMarker=null;
+  }
+  $("selectedLocation").textContent="No location selected";
+  $("locationStatus").textContent="Location removed from this post.";
+};
+
+boot();
+</script>
+</body>
+</html>
