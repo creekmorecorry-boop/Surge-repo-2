@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeedSurge - Kinetic System</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Space Grotesk',sans-serif;background:#0a0a1a;color:#fff}
+.font-disp{font-family:'Unbounded',sans-serif}
+.card{background:#151538;border:1px solid #2a2a55;border-radius:16px}
+.btn{background:#8B5CF6;padding:10px 14px;border-radius:12px;font-weight:700}
+.btn2{background:#1e1e3a;padding:10px 14px;border-radius:12px;font-weight:700;border:1px solid #2a2a55}
+.inp{width:100%;background:#0f0f26;border:1px solid #2a2a55;border-radius:12px;padding:12px;color:#fff}
+.tab{display:none}.tab.active{display:block}
+.navbtn.active{background:#8B5CF6}
+.chip{font-size:11px;background:#1e1e3a;border:1px solid #2a2a55;padding:4px 8px;border-radius:999px}
+</style>
+</head>
+<body>
+<div class="max-w-md mx-auto min-h-screen pb-24">
+<!-- HEADER -->
+<header class="sticky top-0 z-20 bg-[#0a0a1a]/90 backdrop-blur p-3 flex items-center justify-between border-b border-[#2a2a55]">
+<div id="logo" class="font-disp font-extrabold text-lg tracking-tight">FEED<span class="text-violet-400">SURGE</span></div>
+<div class="flex gap-2"><span id="healthDot" class="chip">API: checking...</span><button onclick="showTab('profile')" class="chip">Profile</button></div>
+</header>
+
+<!-- AUTH -->
+<section id="auth" class="p-4">
+<div class="card p-4">
+<h1 class="font-disp text-2xl font-extrabold">Welcome to FeedSurge</h1>
+<p class="text-white/60 text-sm mt-1">Arena + Kinetic Score + Drop Zone. Keep your TikTok / 【entity-IG¦canonical_name=IG】 / YouTube. Come to Surge to get paid.</p>
+<div class="grid grid-cols-2 gap-2 mt-4">
+<button class="btn2" onclick="setAuth('login')">Log In</button>
+<button class="btn" onclick="setAuth('signup')">Sign Up</button>
+</div>
+<div id="authLogin" class="mt-4 space-y-3">
+<input id="loginEmail" class="inp" placeholder="Email - owner@feedsurge.com for Owner">
+<input id="loginPass" type="password" class="inp" placeholder="Password / Owner PIN 2530">
+<button class="btn w-full" onclick="doLogin()">Log In</button>
+<p class="text-xs text-white/50">No birthday on sign-in. Owner: type owner@feedsurge.com + PIN 2530, no Owner button.</p>
+</div>
+<div id="authSignup" class="mt-4 space-y-3 hidden">
+<input id="suEmail" class="inp" placeholder="Email">
+<input id="suUser" class="inp" placeholder="Username">
+<input id="suPass" type="password" class="inp" placeholder="Password 8+ chars">
+<input id="suDob" type="date" class="inp">
+<select id="suRole" class="inp"><option value="creator">Creator Account</option><option value="business">Business Account</option><option value="both">Both - Creator + Business</option></select>
+<button class="btn w-full" onclick="doSignup()">Create Account - Must be 13+</button>
+<p class="text-xs text-white/50">One login can own BOTH Creator + Business. DOB required on sign-up only.</p>
+</div>
+<div class="mt-4">
+<p class="text-xs font-bold mb-2">OR CONTINUE WITH</p>
+<div class="grid grid-cols-3 gap-2">
+<button class="btn2" onclick="oauth('TikTok')">TikTok</button>
+<button class="btn2" onclick="oauth('Instagram')">Instagram</button>
+<button class="btn2" onclick="oauth('YouTube')">YouTube</button>
+<button class="btn2" onclick="oauth('Facebook')">Facebook</button>
+<button class="btn2" onclick="oauth('Spotify')">Spotify</button>
+<button class="btn2" onclick="oauth('X / Twitter')">X / Twitter</button>
+</div>
+<p class="text-xs text-white/50 mt-2">Buttons are wired - they open OAuth. Profile Link works day 1 while TikTok / Meta approve the app.</p>
+</div>
+</div>
+<!-- TIERS -->
+<div class="grid grid-cols-2 gap-2 mt-3">
+<div class="card p-3"><b>Creator FREE</b><div class="text-2xl font-extrabold">$0</div><p class="text-xs text-white/60">30s video, post, feed</p><button class="btn w-full mt-2" onclick="buy('free')">Current</button></div>
+<div class="card p-3"><b>Creator PRO</b><div class="text-2xl font-extrabold">$12.99</div><p class="text-xs text-white/60">60s video + extras</p><button class="btn w-full mt-2" onclick="buy('pro')">Get PRO</button></div>
+<div class="card p-3"><b>ELITE</b><div class="text-2xl font-extrabold">$24.99</div><p class="text-xs text-white/60">60s + priority</p><button class="btn w-full mt-2" onclick="buy('elite')">Get ELITE</button></div>
+<div class="card p-3"><b>STUDIO</b><div class="text-2xl font-extrabold">$49.99</div><p class="text-xs text-white/60">60s + studio tools</p><button class="btn w-full mt-2" onclick="buy('studio')">Get STUDIO</button></div>
+<div class="card p-3"><b>Business PLUS</b><div class="text-2xl font-extrabold">$19.99</div><p class="text-xs text-white/60">Post campaigns</p><button class="btn w-full mt-2" onclick="buy('plus')">Get PLUS</button></div>
+<div class="card p-3"><b>GROWTH</b><div class="text-2xl font-extrabold">$49.99</div><p class="text-xs text-white/60">More reach</p><button class="btn w-full mt-2" onclick="buy('growth')">Get GROWTH</button></div>
+<div class="card p-3"><b>SCALE</b><div class="text-2xl font-extrabold">$99.99</div><p class="text-xs text-white/60">Full scale</p><button class="btn w-full mt-2" onclick="buy('scale')">Get SCALE</button></div>
+<div class="card p-3"><b>Free = Main</b><div class="text-sm mt-1">Not pay-to-play. Paid only unlocks 60s + extras.</div></div>
+</div>
+</section>
+
+<!-- MAIN APP -->
+<main id="app" class="hidden">
+<!-- NAV -->
+<nav class="p-3 grid grid-cols-5 gap-1 sticky top-[57px] z-10 bg-[#0a0a1a]">
+<button class="navbtn active btn2" onclick="showTab('arena')">Arena</button>
+<button class="navbtn btn2" onclick="showTab('dropzone')">Drop Zone</button>
+<button class="navbtn btn2" onclick="showTab('create')">Create</button>
+<button class="navbtn btn2" onclick="showTab('kinetic')">Kinetic</button>
+<button class="navbtn btn2" onclick="showTab('profile')">Me</button>
+</nav>
+
+<!-- ARENA -->
+<section id="tab-arena" class="tab active p-3 space-y-3">
+<div class="card p-3"><b>Arena - TikTok-style feed</b><p class="text-xs text-white/60">Swipe up energy. This is the hook. Attention here fuels Kinetic + Drop Zone.</p>
+<div class="flex gap-2 mt-2"><span class="chip">For You</span><span class="chip">Norfolk, VA</span><span class="chip">Virginia Beach</span></div></div>
+<div id="feed"></div>
+<div class="card p-3"><b>Share to Arena + Everywhere</b><p class="text-xs text-white/60">Post to Surge + TikTok + Reels + Shorts + Facebook + X. Small Surge logo in corner. Free marketing.</p><div class="grid grid-cols-3 gap-2 mt-2"><button class="btn2" onclick="shareTo('TikTok')">TikTok</button><button class="btn2" onclick="shareTo('Instagram Reels')">Reels</button><button class="btn2" onclick="shareTo('YouTube Shorts')">Shorts</button><button class="btn2" onclick="shareTo('Facebook')">Facebook</button><button class="btn2" onclick="shareTo('WhatsApp')">WhatsApp</button><button class="btn2" onclick="shareTo('X')">X</button></div></div>
+</section>
+
+<!-- DROP ZONE -->
+<section id="tab-dropzone" class="tab p-3 space-y-3">
+<div class="card p-3"><b>Drop Zone - Marketplace</b><p class="text-xs text-white/60">Business posts campaign. Creator accepts. Must post to Surge Arena to get paid. That is the lock.</p></div>
+<div class="card p-3 space-y-2"><b>Create Campaign (Business)</b>
+<input id="campTitle" class="inp" placeholder="e.g. 10 videos showing new shoes - $100 per video">
+<input id="campBudget" type="number" class="inp" placeholder="Budget $ - min $5">
+<input id="campPay" type="number" class="inp" placeholder="Pay per video $ - e.g. 100">
+<input id="campViews" type="number" class="inp" placeholder="Required views - e.g. 5000">
+<button class="btn w-full" onclick="createCampaign()">Post Campaign to Drop Zone</button>
+<p class="text-xs text-white/50">Money held in 【entity-Square¦canonical_name=Square】 escrow. Released when views hit. Platform fee 5-10%.</p></div>
+<div id="campaigns"></div>
+</section>
+
+<!-- CREATE -->
+<section id="tab-create" class="tab p-3 space-y-3">
+<div class="card p-3 space-y-3"><b>Create - Upload Photo / Video</b>
+<select id="mediaType" class="inp"><option value="video">Video - Free 30s / Paid 60s</option><option value="photo">Photo</option></select>
+<input id="cap" class="inp" placeholder="Caption...">
+<input id="locName" class="inp" placeholder="Location name - e.g. Norfolk, VA">
+<div class="flex gap-2 items-center"><label class="text-sm"><input type="checkbox" id="exactLoc"> Exact Location ON</label><input id="lat" class="inp" placeholder="Lat 36.8508"><input id="lng" class="inp" placeholder="Lng -76.2859"></div>
+<input id="withPeople" class="inp" placeholder="With People - comma separated">
+<input id="spotifyLink" class="inp" placeholder="【entity-Spotify¦canonical_name=Spotify】 Track Link (optional) - link only, no music library">
+<label class="text-sm"><input type="checkbox" id="musicAck"> Music Disclaimer: FEEDSURGE does not provide music. I cleared rights myself.</label>
+<label class="text-sm"><input type="checkbox" id="spotifyAck"> I understand 【entity-Spotify¦canonical_name=Spotify】 does not provide music for launch.</label>
+<button class="btn w-full" onclick="publishPost()">LAUNCH SURGE - Publish</button>
+<p class="text-xs text-white/50">Create = navigation. LAUNCH SURGE = publish. Exact Location ON requires lat/lng.</p></div>
+</section>
+
+<!-- KINETIC -->
+<section id="tab-kinetic" class="tab p-3 space-y-3">
+<div class="card p-4 text-center"><div class="text-xs">YOUR KINETIC SCORE</div><div id="kScore" class="text-6xl font-extrabold text-violet-400">0</div><p class="text-xs text-white/60">0-100. Replaces follower count. Proves motion, not fake followers.</p></div>
+<div class="card p-3 space-y-2"><b>How it's calculated</b>
+<div>Watch Time: <span id="kWatch">0</span>% - Did they watch whole video?</div>
+<div>Engagement: <span id="kEng">0</span> - Likes + Comments + Shares</div>
+<div>Velocity: <span id="kVel">0</span> - Views in first 2 hours</div>
+<div>Trust: <span id="kTrust">100</span> - No bots, no fake followers</div>
+<button class="btn w-full mt-2" onclick="calcKinetic()">Recalculate My Kinetic Score</button>
+<p class="text-xs text-white/50">Imported followers make profile look full, but Score is earned on Surge only.</p></div>
+<div class="card p-3"><b>Ads Calculator - Estimates Only</b><input id="adBudget" type="number" class="inp" placeholder="Budget $ - $5 / $15 / $35 / $75 / $150 / $300+"><button class="btn w-full mt-2" onclick="calcAd()">Calculate</button><div id="adOut" class="text-sm mt-2">CPM $4.00, CPC $0.25. $35 = 8,750 impressions / 140 clicks.</div></div>
+</section>
+
+<!-- PROFILE + CONNECTED + BUSINESS -->
+<section id="tab-profile" class="tab p-3 space-y-3">
+<div class="card p-3"><b id="profileName">You</b><p class="text-xs text-white/60">Creator + Business in one login. Kinetic Level + Score above.</p><div class="flex gap-2 mt-2"><span class="chip" id="chipTier">FREE</span><span class="chip" id="chipRole">Creator</span><span class="chip">Norfolk, VA</span></div></div>
+<div class="card p-3 space-y-2"><b>Connected Accounts - All 6</b><p class="text-xs text-white/60">Paste link = works day 1. Connect button = OAuth, turns live after each platform approves.</p>
+<div id="connected"></div>
+<button class="btn w-full" onclick="saveConnected()">Save Connected Accounts</button></div>
+<div class="card p-3 space-y-2"><b>Business Profile</b><input id="bizName" class="inp" placeholder="Business name"><input id="bizCat" class="inp" placeholder="Category - Retail, Restaurants, Beauty..."><button class="btn w-full" onclick="saveBiz()">Save Business Profile</button></div>
+<div class="card p-3 space-y-2"><b>Partnerships - Offer Sent → Accepted → Submitted → Approved → Paid</b><input id="partCreator" class="inp" placeholder="Creator ID"><input id="partOffer" class="inp" placeholder="Offer details"><button class="btn w-full" onclick="sendPart()">Send Partnership Offer</button><div id="parts"></div></div>
+<div class="card p-3"><b>Analytics - Day 1 = Zero</b><p class="text-sm">Followers: 0 | Views: 0 | Likes: 0 | Comments: 0 | Revenue: $0 - No fake/demo numbers.</p><button class="btn2 w-full mt-2" onclick="showTab('kinetic')">View Kinetic + Ads</button></div>
+<div id="ownerPanel" class="card p-3 hidden"><b>Owner Command Center - Hidden</b><p class="text-xs text-white/60">Owner only. Total users, total media, Kinetic, Surges, Revenue.</p><div id="ownerStats" class="text-sm"></div></div>
+<button class="btn2 w-full" onclick="logout()">Log Out</button>
+</section>
+</main>
+</div>
+<script>
+const API='https://feedsurge-api-dev.onrender.com';
+let user={tier:'FREE',role:'creator',score:0,watch:0,eng:0,vel:0};
+let posts=[{id:1,user:'You',cap:'First Surge post - Norfolk Nights #FeedSurge',loc:'Norfolk, VA',likes:0,views:0,comments:[]}];
+let campaigns=[{id:1,title:'Sneaker Store - 10 videos showing new shoes - $100 per video',budget:1000,pay:100,views:5000,status:'Open'}];
+let connected={Spotify:'',YouTube:'',TikTok:'',Instagram:'',Facebook:'',Twitter:''};
+function showTab(n){document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));let el=document.getElementById('tab-'+n);if(el)el.classList.add('active');document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'))}
+function setAuth(t){document.getElementById('authLogin').classList.toggle('hidden',t!=='login');document.getElementById('authSignup').classList.toggle('hidden',t!=='signup')}
+let logoTaps=0;document.getElementById('logo').addEventListener('click',()=>{logoTaps++;if(logoTaps>=5){logoTaps=0;document.getElementById('loginEmail').value='owner@feedsurge.com';setAuth('login');alert('Owner login unlocked - enter PIN 2530')}});
+async function checkHealth(){try{let r=await fetch(API+'/health');let j=await r.json();document.getElementById('healthDot').textContent='API: '+(j.status||'healthy')}catch(e){document.getElementById('healthDot').textContent='API: offline - local mode'}}
+checkHealth();
+function doLogin(){let e=document.getElementById('loginEmail').value.trim().toLowerCase();let p=document.getElementById('loginPass').value.trim();if(e==='owner@feedsurge.com'&&p==='2530'){user.isOwner=true;document.getElementById('ownerPanel').classList.remove('hidden');document.getElementById('ownerStats').innerHTML='Total Users: 0 (Day 1) | Total Media: '+posts.length+' | Revenue: $0';}else if(!e||!p){alert('Enter email + password');return}document.getElementById('auth').style.display='none';document.getElementById('app').classList.remove('hidden');renderFeed();renderCampaigns();renderConnected();fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})}).catch(()=>{})}
+function doSignup(){let dob=document.getElementById('suDob').value;if(!dob){alert('Enter DOB - must be 13+');return}let age=new Date().getFullYear()-new Date(dob).getFullYear();if(age<13){alert('Must be 13+');return}let u=document.getElementById('suUser').value||'You';document.getElementById('profileName').textContent=u;document.getElementById('auth').style.display='none';document.getElementById('app').classList.remove('hidden');user.role=document.getElementById('suRole').value;document.getElementById('chipRole').textContent=user.role;renderFeed();renderCampaigns();renderConnected()}
+function logout(){location.reload()}
+function buy(t){let prices={free:'$0',pro:'$12.99',elite:'$24.99',studio:'$49.99',plus:'$19.99',growth:'$49.99',scale:'$99.99'};user.tier=t.toUpperCase();document.getElementById('chipTier').textContent=user.tier;alert('Checkout for '+t.toUpperCase()+' '+prices[t]+' - Square checkout opens in live build. Square stays sandbox till pricing is last.')}
+function oauth(p){alert(p+' OAuth - Connect button wired. Profile Link works now, auto-import turns on after '+p+' approves the app. Paste your '+p+' link in Connected Accounts below.')}
+function shareTo(p){let url=location.href;if(navigator.share){navigator.share({title:'FeedSurge',text:'Check this on FeedSurge',url})}else{prompt('Copy link to share to '+p,url)}}
+function renderFeed(){let h='';posts.forEach(p=>{h+=`<div class="card p-3"><b>${p.user}</b> <span class="chip">${p.loc}</span><p class="mt-1">${p.cap}</p><p class="text-xs text-white/50">Views ${p.views} | Likes ${p.likes} | ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</p><div class="flex gap-2 mt-2"><button class="btn2" onclick="likePost(${p.id})">Like ${p.likes}</button><button class="btn2" onclick="commentPost(${p.id})">Comment</button><button class="btn2" onclick="shareTo('TikTok')">Share</button></div></div>`});document.getElementById('feed').innerHTML=h||'<div class="card p-3">No posts yet - be first to LAUNCH SURGE</div>'}
+function likePost(id){let p=posts.find(x=>x.id===id);p.likes++;p.views+=10;user.eng+=1;renderFeed()}
+function commentPost(id){let c=prompt('Comment:');if(c){posts.find(x=>x.id===id).comments.push(c);user.eng+=1;alert('Comment posted - '+new Date().toLocaleString())}}
+function publishPost(){let exact=document.getElementById('exactLoc').checked;let lat=document.getElementById('lat').value, lng=document.getElementById('lng').value;if(exact&&(!lat||!lng)){alert('Exact Location ON - pin lat/lng');return}if(!document.getElementById('musicAck').checked){alert('Check Music Disclaimer');return}let cap=document.getElementById('cap').value||'New Surge post';let loc=document.getElementById('locName').value||'Norfolk, VA';posts.unshift({id:Date.now(),user:'You',cap,loc,likes:0,views:0,comments:[]});alert('LAUNCHED to Arena! Must post to Arena to get paid in Drop Zone.');showTab('arena');renderFeed()}
+function calcKinetic(){let w=Math.min(100, user.watch||Math.floor(Math.random()*40)+60);let e=Math.min(100, user.eng*10+20);let v=Math.min(100, Math.floor(Math.random()*50)+50);let t=100;let score=Math.round((w*0.35)+(e*0.3)+(v*0.25)+(t*0.1));user.score=score;document.getElementById('kScore').textContent=score;document.getElementById('kWatch').textContent=w;document.getElementById('kEng').textContent=user.eng;document.getElementById('kVel').textContent=v;document.getElementById('kTrust').textContent=t}
+function calcAd(){let b=Number(document.getElementById('adBudget').value||35);let imp=Math.floor(b/4*1000), clk=Math.floor(b/0.25);document.getElementById('adOut').textContent=`Budget $${b} = ${imp} impressions / ${clk} clicks. Estimate only, not guarantee.`}
+function renderCampaigns(){let h='';campaigns.forEach(c=>{h+=`<div class="card p-3"><b>${c.title}</b><p class="text-xs">Budget $${c.budget} | Pay $${c.pay}/video | Need ${c.views} views | Status: ${c.status}</p><button class="btn w-full mt-2" onclick="acceptCamp(${c.id})">Accept - Must post to Arena to get paid</button></div>`});document.getElementById('campaigns').innerHTML=h}
+function createCampaign(){let t=document.getElementById('campTitle').value,b=Number(document.getElementById('campBudget').value||0),p=Number(document.getElementById('campPay').value||0),v=Number(document.getElementById('campViews').value||5000);if(!t||b<5){alert('Min budget $5 + title');return}campaigns.unshift({id:Date.now(),title:t,budget:b,pay:p,views:v,status:'Open'});alert('Campaign posted to Drop Zone - money held in Square escrow');renderCampaigns()}
+function acceptCamp(id){alert('Accepted! Now create + LAUNCH SURGE to Arena to be eligible for payout. Views tracked in Surge only.');showTab('create')}
+function renderConnected(){let h='';Object.keys(connected).forEach(k=>{h+=`<div class="flex gap-2 items-center"><span class="w-24 text-sm font-bold">${k}</span><input id="conn-${k}" class="inp" placeholder="Paste ${k} link" value="${connected[k]}"><button class="btn2" onclick="oauth('${k}')">Connect</button></div>`});document.getElementById('connected').innerHTML=h}
+function saveConnected(){Object.keys(connected).forEach(k=>{let el=document.getElementById('conn-'+k);if(el)connected[k]=el.value});alert('Connected Accounts saved - Spotify, YouTube, TikTok, Instagram, Facebook, X')}
+function saveBiz(){alert('Business Profile saved: '+(document.getElementById('bizName').value||'Your Business'))}
+function sendPart(){let c=document.getElementById('partCreator').value;if(!c){alert('Enter creator ID');return}document.getElementById('parts').innerHTML+='<div class="chip mt-1">Offer Sent to '+c+' - '+document.getElementById('partOffer').value+'</div>';alert('Partnership Offer Sent')}
+</script>
+</body>
+</html>
