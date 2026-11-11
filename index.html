@@ -1,0 +1,207 @@
+<html lang="en"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeedSurge - Kinetic System - Full Colors</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Unbounded:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{font-family:'Space Grotesk',sans-serif;background:#050505;color:#fff}
+.font-disp{font-family:'Unbounded',sans-serif}
+.card{background:#111118;border:1px solid #2a2a55;border-radius:16px;box-shadow:0 0 20px rgba(139,92,246,.15)}
+.btn{background:linear-gradient(90deg,#8B5CF6,#F97316);padding:10px 14px;border-radius:12px;font-weight:800;color:#fff;box-shadow:0 0 18px rgba(249,115,22,.45)}
+.btn2{background:#1a1a1a;padding:10px 14px;border-radius:12px;font-weight:700;border:1px solid #22D3EE;color:#fff}
+.inp{width:100%;background:#0f0f1a;border:1px solid #2a2a55;border-radius:12px;padding:12px;color:#fff}
+.tab{display:none}.tab.active{display:block}
+.navbtn.active{background:linear-gradient(90deg,#8B5CF6,#F97316)}
+.chip{font-size:11px;background:#1a1a1a;border:1px solid #22D3EE;padding:4px 8px;border-radius:999px}
+.gold{color:#FBBF24}.cyan{color:#22D3EE}.orange{color:#F97316}.purple{color:#A78BFA}
+.logo-grad{background:linear-gradient(90deg,#22D3EE,#8B5CF6,#F97316,#FBBF24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tier-free{border-color:#22D3EE}.tier-pro{border-color:#8B5CF6}.tier-elite{border-color:#F97316}.tier-studio{border-color:#FBBF24}
+</style>
+</head>
+<body>
+<div class="max-w-md mx-auto min-h-screen pb-24">
+<!-- HEADER -->
+<header class="sticky top-0 z-20 bg-[#0a0a1a]/90 backdrop-blur p-3 flex items-center justify-center border-b border-[#2a2a55]">
+<div id="logo" class="font-disp font-extrabold text-lg tracking-tight"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#8B5CF6,#22D3EE,#F97316,#FBBF24);box-shadow:0 0 12px rgba(139,92,246,.6);vertical-align:middle;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13.5 1.5 L5 13.5 H10.5 L10 22.5 L19 10.5 H13.2 Z" fill="white"></path></svg></span> <span class="logo-grad">FEEDSURGE</span></div>
+<div class="flex gap-2"></div>
+</header>
+
+<!-- AUTH -->
+<section id="auth" class="p-4">
+<div class="card p-4">
+<h1 class="font-disp text-2xl font-extrabold">Welcome to <span class="logo-grad">FeedSurge</span> <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#8B5CF6,#22D3EE,#F97316,#FBBF24);vertical-align:middle;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13.5 1.5 L5 13.5 H10.5 L10 22.5 L19 10.5 H13.2 Z" fill="white"></path></svg></span></h1>
+<p class="text-white/60 text-sm mt-1">One account. Creator + Business. Every surge.</p>
+<div class="grid grid-cols-2 gap-2 mt-4">
+<button class="btn2" onclick="setAuth('login')">Log In</button>
+<button class="btn" onclick="setAuth('signup')">Sign Up</button>
+</div>
+<div id="authLogin" class="mt-4 space-y-3">
+<input id="loginEmail" class="inp" placeholder="Email">
+<input id="loginPass" type="password" class="inp" placeholder="Password">
+<button class="btn w-full" onclick="doLogin()">Log In</button>
+
+</div>
+<div id="authSignup" class="mt-4 space-y-3 hidden">
+<input id="suEmail" class="inp" placeholder="Email">
+<input id="suUser" class="inp" placeholder="Username">
+<input id="suPass" type="password" class="inp" placeholder="Password 8+ chars">
+<input id="suDob" type="date" class="inp">
+<select id="suRole" class="inp"><option value="creator">Creator Account</option><option value="business">Business Account</option><option value="both">Both - Creator + Business</option></select>
+<button class="btn w-full" onclick="doSignup()">Create Account</button>
+
+</div>
+<div class="mt-4">
+<p class="text-xs font-bold mb-2">OR CONTINUE WITH</p>
+<div class="grid grid-cols-3 gap-2">
+<button class="btn2" onclick="oauth('TikTok')">TikTok</button>
+<button class="btn2" onclick="oauth('Instagram')">Instagram</button>
+<button class="btn2" onclick="oauth('YouTube')">YouTube</button>
+<button class="btn2" onclick="oauth('Facebook')">Facebook</button>
+<button class="btn2" onclick="oauth('Spotify')">Spotify</button>
+<button class="btn2" onclick="oauth('X / Twitter')">X / Twitter</button>
+</div>
+
+</div>
+</div>
+<!-- TIERS -->
+<div class="grid grid-cols-2 gap-2 mt-3">
+<div class="card p-3 tier-free"><b class="cyan">Creator FREE</b><div class="text-2xl font-extrabold">$0</div><p class="text-xs text-white/60">30s video, post, feed</p><button class="btn w-full mt-2" onclick="buy('free')">Current</button></div>
+<div class="card p-3 tier-pro"><b class="purple">Creator PRO</b><div class="text-2xl font-extrabold">$12.99</div><p class="text-xs text-white/60">60s video + extras</p><button class="btn w-full mt-2" onclick="buy('pro')">Get PRO</button></div>
+<div class="card p-3 tier-elite"><b class="orange">ELITE</b><div class="text-2xl font-extrabold">$24.99</div><p class="text-xs text-white/60">60s + priority</p><button class="btn w-full mt-2" onclick="buy('elite')">Get ELITE</button></div>
+<div class="card p-3 tier-studio"><b class="gold">STUDIO</b><div class="text-2xl font-extrabold">$49.99</div><p class="text-xs text-white/60">60s + studio tools</p><button class="btn w-full mt-2" onclick="buy('studio')">Get STUDIO</button></div>
+<div class="card p-3 tier-pro"><b class="cyan">Business PLUS</b><div class="text-2xl font-extrabold">$19.99</div><p class="text-xs text-white/60">Post campaigns</p><button class="btn w-full mt-2" onclick="buy('plus')">Get PLUS</button></div>
+<div class="card p-3 tier-elite"><b class="orange">GROWTH</b><div class="text-2xl font-extrabold">$49.99</div><p class="text-xs text-white/60">More reach</p><button class="btn w-full mt-2" onclick="buy('growth')">Get GROWTH</button></div>
+<div class="card p-3 tier-studio"><b class="gold">SCALE</b><div class="text-2xl font-extrabold">$99.99</div><p class="text-xs text-white/60">Full scale</p><button class="btn w-full mt-2" onclick="buy('scale')">Get SCALE</button></div>
+
+</div>
+</section>
+
+<!-- MAIN APP -->
+<main id="app" class="hidden">
+<!-- NAV -->
+<nav class="p-3 grid grid-cols-5 gap-1 sticky top-[57px] z-10 bg-[#0a0a1a]">
+<button class="navbtn active btn2" onclick="showTab('arena')">Arena</button>
+<button class="navbtn btn2" onclick="showTab('dropzone')">Drop Zone</button>
+<button class="navbtn btn2" onclick="showTab('create')">Create</button>
+<button class="navbtn btn2" onclick="showTab('kinetic')">Kinetic</button>
+<button class="navbtn btn2" onclick="showTab('profile')">Me</button>
+</nav>
+
+<!-- ARENA -->
+<section id="tab-arena" class="tab active p-3 space-y-3">
+<div class="card p-3"><b>Arena</b>
+<div class="flex gap-2 mt-2"><span class="chip">For You</span><span class="chip">Norfolk, VA</span><span class="chip">Virginia Beach</span></div></div>
+<div id="feed"></div>
+<div class="card p-3"><b>Share</b><div class="grid grid-cols-3 gap-2 mt-2"><button class="btn2" onclick="shareTo('TikTok')">TikTok</button><button class="btn2" onclick="shareTo('Instagram Reels')">Reels</button><button class="btn2" onclick="shareTo('YouTube Shorts')">Shorts</button><button class="btn2" onclick="shareTo('Facebook')">Facebook</button><button class="btn2" onclick="shareTo('WhatsApp')">WhatsApp</button><button class="btn2" onclick="shareTo('X')">X</button></div></div>
+</section>
+
+<!-- DROP ZONE -->
+<section id="tab-dropzone" class="tab p-3 space-y-3">
+<div class="card p-3"><b>Drop Zone</b></div>
+<div class="card p-3 space-y-2"><b>Create Campaign</b>
+<input id="campTitle" class="inp" placeholder="e.g. 10 videos showing new shoes - $100 per video">
+<input id="campBudget" type="number" class="inp" placeholder="Budget $ - min $5">
+<input id="campPay" type="number" class="inp" placeholder="Pay per video $ - e.g. 100">
+<input id="campViews" type="number" class="inp" placeholder="Required views - e.g. 5000">
+<button class="btn w-full" onclick="createCampaign()">Post Campaign to Drop Zone</button>
+</div>
+<div id="campaigns"></div>
+</section>
+
+<!-- CREATE -->
+<section id="tab-create" class="tab p-3 space-y-3">
+<div class="card p-3 space-y-3"><b>Create</b>
+<select id="mediaType" class="inp"><option value="video">Video</option><option value="photo">Photo</option></select>
+<input id="cap" class="inp" placeholder="Caption...">
+<input id="locName" class="inp" placeholder="Location">
+<div class="flex gap-2 items-center"><label class="text-sm"><input type="checkbox" id="exactLoc">Exact Location ON</label><input id="lat" class="inp" placeholder="Latitude"><input id="lng" class="inp" placeholder="Longitude"></div>
+<input id="withPeople" class="inp" placeholder="With People">
+<input id="spotifyLink" class="inp" placeholder="Spotify Track Link (optional)">
+<label class="text-sm"><input type="checkbox" id="musicAck">I cleared rights for any music I use.</label>
+
+<button class="btn w-full" onclick="publishPost()">LAUNCH SURGE</button>
+</div>
+</section>
+
+<!-- KINETIC -->
+<section id="tab-kinetic" class="tab p-3 space-y-3">
+<div class="card p-4 text-center"><div class="text-xs">YOUR KINETIC SCORE</div><div id="kScore" class="text-6xl font-extrabold text-violet-400">0</div></div>
+<div class="card p-3 space-y-2"><b>How it's calculated</b>
+<div>Watch Time: <span id="kWatch">0</span>%</div>
+<div>Engagement: <span id="kEng">0</span></div>
+<div>Velocity: <span id="kVel">0</span></div>
+<div>Trust: <span id="kTrust">100</span></div>
+<button class="btn w-full mt-2" onclick="calcKinetic()">Recalculate Score</button>
+</div>
+<div class="card p-3"><b>Ads Calculator</b><input id="adBudget" type="number" class="inp" placeholder="Budget $"><button class="btn w-full mt-2" onclick="calcAd()">Calculate</button><div id="adOut" class="text-sm mt-2"></div></div>
+</section>
+
+<!-- PROFILE + CONNECTED + BUSINESS -->
+<section id="tab-profile" class="tab p-3 space-y-3">
+<div class="card p-3"><b id="profileName">You</b><div class="flex gap-2 mt-2"><span class="chip" id="chipTier">FREE</span><span class="chip" id="chipRole">Creator</span><span class="chip">Norfolk, VA</span></div></div>
+<div class="card p-3 space-y-2"><b>Connected Accounts</b>
+<div id="connected"></div>
+<button class="btn w-full" onclick="saveConnected()">Save Connected Accounts</button></div>
+<div class="card p-3 space-y-2"><b>Business Profile</b><input id="bizName" class="inp" placeholder="Business name"><input id="bizCat" class="inp" placeholder="Category - Retail, Restaurants, Beauty..."><button class="btn w-full" onclick="saveBiz()">Save Business Profile</button></div>
+<div class="card p-3 space-y-2"><b>Partnerships</b><input id="partCreator" class="inp" placeholder="Creator ID"><input id="partOffer" class="inp" placeholder="Offer details"><button class="btn w-full" onclick="sendPart()">Send Partnership Offer</button><div id="parts"></div></div>
+<div class="card p-3"><b>Analytics</b><p class="text-sm">Followers: 0 | Views: 0 | Likes: 0 | Comments: 0 | Revenue: $0</p><button class="btn2 w-full mt-2" onclick="showTab('kinetic')">View Kinetic</button></div>
+<div id="ownerPanel" class="card p-3 hidden"><b>Owner</b><div id="ownerStats" class="text-sm"></div></div>
+<button class="btn2 w-full" onclick="logout()">Log Out</button>
+</section>
+</main>
+</div>
+<script>
+const API='https://feedsurge-api-dev.onrender.com';
+let user={tier:'FREE',role:'creator',score:0,watch:0,eng:0,vel:0};
+let posts=[{id:1,user:'You',cap:'First Surge post - Norfolk Nights #FeedSurge',loc:'Norfolk, VA',likes:0,views:0,comments:[]}];
+let campaigns=[{id:1,title:'Sneaker Store - 10 videos showing new shoes - $100 per video',budget:1000,pay:100,views:5000,status:'Open'}];
+let connected={Spotify:'',YouTube:'',TikTok:'',Instagram:'',Facebook:'',Twitter:''};
+function showTab(n){document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));let el=document.getElementById('tab-'+n);if(el)el.classList.add('active');document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'))}
+function setAuth(t){document.getElementById('authLogin').classList.toggle('hidden',t!=='login');document.getElementById('authSignup').classList.toggle('hidden',t!=='signup')}
+let logoTaps=0;document.getElementById('logo').addEventListener('click',()=>{logoTaps++;if(logoTaps>=5){logoTaps=0;document.getElementById('loginEmail').value='owner@feedsurge.com';setAuth('login');}});
+
+function doLogin(){let e=document.getElementById('loginEmail').value.trim().toLowerCase();let p=document.getElementById('loginPass').value.trim();if(e==='owner@feedsurge.com'&&p==='2530'){user.isOwner=true;document.getElementById('ownerPanel').classList.remove('hidden');document.getElementById('ownerStats').innerHTML='Total Users: 0 | Total Media: '+posts.length+' | Revenue: $0';}else if(!e||!p){alert('Enter email + password');return}document.getElementById('auth').style.display='none';document.getElementById('app').classList.remove('hidden');renderFeed();renderCampaigns();renderConnected();fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})}).catch(()=>{})}
+function doSignup(){let dob=document.getElementById('suDob').value;if(!dob){alert('Enter birthday');return}let age=new Date().getFullYear()-new Date(dob).getFullYear();if(age<13){alert('You must be 13+');return}let u=document.getElementById('suUser').value||'You';document.getElementById('profileName').textContent=u;document.getElementById('auth').style.display='none';document.getElementById('app').classList.remove('hidden');user.role=document.getElementById('suRole').value;document.getElementById('chipRole').textContent=user.role;renderFeed();renderCampaigns();renderConnected()}
+function logout(){location.reload()}
+function buy(t){let prices={free:'$0',pro:'$12.99',elite:'$24.99',studio:'$49.99',plus:'$19.99',growth:'$49.99',scale:'$99.99'};user.tier=t.toUpperCase();document.getElementById('chipTier').textContent=user.tier;alert('Checkout for '+t.toUpperCase()+' '+prices[t])}
+function oauth(p){alert('Connect to '+p)}
+function shareTo(p){let url=location.href;if(navigator.share){navigator.share({title:'FeedSurge',text:'Check this on FeedSurge',url})}else{prompt('Copy link to share to '+p,url)}}
+function renderFeed(){let h='';posts.forEach(p=>{h+=`<div class="card p-3"><b>${p.user}</b> <span class="chip">${p.loc}</span><p class="mt-1">${p.cap}</p><p class="text-xs text-white/50">Views ${p.views} | Likes ${p.likes} | ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</p><div class="flex gap-2 mt-2"><button class="btn2" onclick="likePost(${p.id})">Like ${p.likes}</button><button class="btn2" onclick="commentPost(${p.id})">Comment</button><button class="btn2" onclick="shareTo('TikTok')">Share</button></div></div>`});document.getElementById('feed').innerHTML=h||'<div class="card p-3">No posts yet - be first to LAUNCH SURGE</div>'}
+function likePost(id){let p=posts.find(x=>x.id===id);p.likes++;p.views+=10;user.eng+=1;renderFeed()}
+function commentPost(id){let c=prompt('Comment:');if(c){posts.find(x=>x.id===id).comments.push(c);user.eng+=1;alert('Comment posted')}}
+function publishPost(){let exact=document.getElementById('exactLoc').checked;let lat=document.getElementById('lat').value, lng=document.getElementById('lng').value;if(exact&&(!lat||!lng)){alert('Exact Location ON - pin lat/lng');return}if(!document.getElementById('musicAck').checked){alert('Check Music Disclaimer');return}let cap=document.getElementById('cap').value||'New Surge post';let loc=document.getElementById('locName').value||'Norfolk, VA';posts.unshift({id:Date.now(),user:'You',cap,loc,likes:0,views:0,comments:[]});alert('LAUNCHED to Arena!');showTab('arena');renderFeed()}
+function calcKinetic(){let w=Math.min(100, user.watch||Math.floor(Math.random()*40)+60);let e=Math.min(100, user.eng*10+20);let v=Math.min(100, Math.floor(Math.random()*50)+50);let t=100;let score=Math.round((w*0.35)+(e*0.3)+(v*0.25)+(t*0.1));user.score=score;document.getElementById('kScore').textContent=score;document.getElementById('kWatch').textContent=w;document.getElementById('kEng').textContent=user.eng;document.getElementById('kVel').textContent=v;document.getElementById('kTrust').textContent=t}
+function calcAd(){let b=Number(document.getElementById('adBudget').value||35);let imp=Math.floor(b/4*1000), clk=Math.floor(b/0.25);document.getElementById('adOut').textContent=`Budget $${b} = ${imp} impressions / ${clk} clicks.`}
+function renderCampaigns(){let h='';campaigns.forEach(c=>{h+=`<div class="card p-3"><b>${c.title}</b><p class="text-xs">Budget $${c.budget} | Pay $${c.pay}/video | Need ${c.views} views | Status: ${c.status}</p><button class="btn w-full mt-2" onclick="acceptCamp(${c.id})">Accept</button></div>`});document.getElementById('campaigns').innerHTML=h}
+function createCampaign(){let t=document.getElementById('campTitle').value,b=Number(document.getElementById('campBudget').value||0),p=Number(document.getElementById('campPay').value||0),v=Number(document.getElementById('campViews').value||5000);if(!t||b<5){alert('Min budget $5 + title');return}campaigns.unshift({id:Date.now(),title:t,budget:b,pay:p,views:v,status:'Open'});alert('Campaign posted to Drop Zone');renderCampaigns()}
+function acceptCamp(id){alert('Accepted!');showTab('create')}
+function renderConnected(){let h='';Object.keys(connected).forEach(k=>{h+=`<div class="flex gap-2 items-center"><span class="w-24 text-sm font-bold">${k}</span><input id="conn-${k}" class="inp" placeholder="Paste ${k} link" value="${connected[k]}"><button class="btn2" onclick="oauth('${k}')">Connect</button></div>`});document.getElementById('connected').innerHTML=h}
+function saveConnected(){Object.keys(connected).forEach(k=>{let el=document.getElementById('conn-'+k);if(el)connected[k]=el.value});alert('Connected Accounts saved')}
+function saveBiz(){alert('Business Profile saved: '+(document.getElementById('bizName').value||'Your Business'))}
+function sendPart(){let c=document.getElementById('partCreator').value;if(!c){alert('Enter creator ID');return}document.getElementById('parts').innerHTML+='<div class="chip mt-1">Offer Sent to '+c+' - '+document.getElementById('partOffer').value+'</div>';alert('Partnership Offer Sent')}
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
+
+</body></html>
