@@ -1,0 +1,142 @@
+<html><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FeedSurge Checkout — Secure</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Inter,Arial,sans-serif;background:#f6f6f8;color:#111}
+.wrap{max-width:430px;margin:0 auto;background:#fff;min-height:100dvh;padding:16px 18px 30px}
+.top{display:flex;justify-content:space-between;align-items:center}.top b{font-size:15px}
+.logo{display:flex;align-items:center;gap:8px;margin:16px 0}.mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(90deg,#a855f7,#22d3ee,#fb923c,#f5c451);display:grid;place-items:center;font-size:22px}
+.tiers{display:flex;gap:8px;margin:12px 0}.tier{flex:1;border:1.5px solid #e5e5ea;border-radius:14px;padding:10px;text-align:center;cursor:pointer}.tier.on{border-color:#111;background:#111;color:#fff}.tier b{display:block}.tier span{font-size:12px;opacity:.7}
+.summary{border:1px solid #e5e5ea;border-radius:16px;padding:14px;margin:12px 0}.summary .row{display:flex;justify-content:space-between;font-size:13px;color:#555;margin-top:6px}
+label{font-size:12px;font-weight:700;display:block;margin-top:14px}
+input{width:100%;padding:12px;border:1px solid #e5e5ea;border-radius:12px;font-size:16px;margin-top:6px;outline:none}input:focus{border-color:#111}
+#card-container{border:1px solid #e5e5ea;border-radius:12px;padding:10px;margin-top:6px;min-height:56px}
+.cards{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.card-badge{border:1px solid #e5e5ea;border-radius:8px;padding:4px 8px;font-size:12px;font-weight:800;background:#fff;display:flex;align-items:center;gap:4px}
+.visa{color:#1A1F71;font-style:italic}.mc{display:flex}.mc i{width:14px;height:14px;border-radius:50%;display:block}.amex{background:#2E77BC;color:#fff;padding:2px 6px;border-radius:4px}
+.pay{width:100%;margin-top:16px;padding:15px;border:none;border-radius:14px;background:linear-gradient(90deg,#a855f7,#22d3ee,#fb923c,#f5c451);font-weight:900;font-size:16px;cursor:pointer;color:#000}.pay:disabled{opacity:.5}
+.trust{margin-top:14px;text-align:center;font-size:12px;color:#666;line-height:1.6}.trust b{color:#111}
+.err{color:#dc2626;font-size:13px;margin-top:8px}.ok{color:#059669;font-size:13px;margin-top:8px}
+.small{font-size:11px;color:#888;margin-top:12px;text-align:center;line-height:1.5}
+</style>
+<script src="https://web.squarecdn.com/v1/square.js"></script>
+</head><body><div class="wrap">
+<div class="top"><span>← Back</span><b>FeedSurge Checkout</b><span>🔒 Secure</span></div>
+<div class="logo"><div class="mark">⚡</div><div><b style="font-size:18px">FEED<span style="background:linear-gradient(90deg,#a855f7,#22d3ee,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent">SURGE</span></b><div style="font-size:12px;color:#666">Secure checkout • feedsurge.site</div></div></div>
+
+<div class="tiers" id="tiers"><div class="tier on" onclick="selectTier('PRO')"><b>PRO</b><span>$12.99/mo</span></div><div class="tier " onclick="selectTier('ELITE')"><b>ELITE</b><span>$24.99/mo</span></div><div class="tier " onclick="selectTier('STUDIO')"><b>STUDIO</b><span>$49.99/mo</span></div></div>
+
+<div class="summary" id="summary"><b>Order summary — FeedSurge PRO</b>
+    <div class="row"><span>Surges per day</span><b>10</b></div>
+    <div class="row"><span>Video length</span><b>60s</b></div>
+    <div class="row"><span>Connected accounts</span><b>3</b></div>
+    <div class="row"><span>Billing</span><b>Monthly • Renews Dec 12, 2026</b></div>
+    <div class="row" style="border-top:1px solid #eee;padding-top:8px"><span>Total today</span><b>$12.99</b></div></div>
+
+<label>Email</label><input id="email" placeholder="you@email.com" type="email">
+<label>Card</label>
+<div id="card-container"></div>
+<div class="cards">
+<span class="card-badge"><span class="visa">VISA</span></span>
+<span class="card-badge"><span class="mc"><i style="background:#EB001B"></i><i style="background:#F79E1B;margin-left:-6px"></i></span> Mastercard</span>
+<span class="card-badge"><span class="amex">AMEX</span></span>
+<span class="card-badge"> Pay</span>
+<span class="card-badge"><span style="color:#4285F4">G</span> Pay</span>
+</div>
+
+<button class="pay" id="payBtn">🔒 Pay $12.99 — Start PRO</button>
+<div id="msg" class="err">Load failed</div>
+
+<div class="trust">🔒 <b>Secure 256-bit encrypted payment</b><br>30-day money-back guarantee • Cancel anytime in Settings<br>Payments processed securely • FeedSurge does not store your card number</div>
+<p class="small">By continuing you agree to FeedSurge Terms &amp; Privacy. This is a secure checkout. You will never be redirected to another site. Your payment is processed by FeedSurge.</p>
+</div>
+
+<script>
+const API = window.location.origin; // on feedsurge.site this is https://feedsurge.site
+const TIERS = {
+  PRO:{price:12.99,surges:10,video:60,conn:3},
+  ELITE:{price:24.99,surges:50,video:60,conn:'Unlimited'},
+  STUDIO:{price:49.99,surges:100,video:60,conn:'Unlimited'},
+  PLUS:{price:19.99,surges:'Business',video:'—',conn:5},
+  GROWTH:{price:49.99,surges:'Business',video:'—',conn:15},
+  SCALE:{price:99.99,surges:'Business',video:'—',conn:'Unlimited'}
+};
+let selected = 'PRO';
+let card = null, payments = null;
+let authToken = localStorage.getItem('fs_api_token') || ''; // your app already stores Supabase token after login
+
+function renderTiers(){
+  const el = document.getElementById('tiers');
+  el.innerHTML = ['PRO','ELITE','STUDIO'].map(t=>`<div class="tier ${t===selected?'on':''}" onclick="selectTier('${t}')"><b>${t}</b><span>$${TIERS[t].price}/mo</span></div>`).join('');
+  const s = TIERS[selected];
+  document.getElementById('summary').innerHTML = `<b>Order summary — FeedSurge ${selected}</b>
+    <div class="row"><span>Surges per day</span><b>${s.surges}</b></div>
+    <div class="row"><span>Video length</span><b>${s.video}s</b></div>
+    <div class="row"><span>Connected accounts</span><b>${s.conn}</b></div>
+    <div class="row"><span>Billing</span><b>Monthly • Renews Dec 12, 2026</b></div>
+    <div class="row" style="border-top:1px solid #eee;padding-top:8px"><span>Total today</span><b>$${s.price.toFixed(2)}</b></div>`;
+  document.getElementById('payBtn').textContent = `🔒 Pay $${s.price.toFixed(2)} — Start ${selected}`;
+}
+function selectTier(t){ selected=t; renderTiers(); }
+renderTiers();
+
+async function initSquare(){
+  const msg = document.getElementById('msg');
+  try{
+    const r = await fetch(API + '/api/payments/config', {headers:{Authorization: authToken ? 'Bearer '+authToken : ''}});
+    const j = await r.json();
+    if(!j.ok) throw new Error('Payments not configured — check Render env vars');
+    payments = window.Square.payments(j.applicationId, j.locationId);
+    card = await payments.card();
+    await card.attach('#card-container');
+  }catch(e){ msg.className='err'; msg.textContent = e.message; }
+}
+initSquare();
+
+document.getElementById('payBtn').onclick = async ()=>{
+  const msg = document.getElementById('msg');
+  const email = document.getElementById('email').value.trim();
+  if(!email || !email.includes('@')){ msg.className='err'; msg.textContent='Please enter a valid email.'; return; }
+  if(!card){ msg.className='err'; msg.textContent='Card form not ready yet. Wait a second and try again.'; return; }
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true; btn.textContent = 'Processing…';
+  msg.textContent='';
+  try{
+    const res = await card.tokenize();
+    if(res.status !== 'OK'){ throw new Error(res.errors ? res.errors[0].message : 'Card could not be verified. Check details.'); }
+    const idempotencyKey = 'fs-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+    const r = await fetch(API + '/api/payments/charge', {
+      method:'POST', headers:{'Content-Type':'application/json', Authorization: authToken ? 'Bearer '+authToken : ''},
+      body: JSON.stringify({ sourceId: res.token, tier: selected, account_type:'creator', kind:'tier_purchase', idempotencyKey })
+    });
+    const j = await r.json();
+    if(!r.ok || !j.ok) throw new Error(j.error || 'Payment declined');
+    msg.className='ok'; msg.textContent = '✅ Welcome to '+selected+'! Your tier is active. Redirecting…';
+    setTimeout(()=>{ window.location.href = '/'; }, 1500);
+  }catch(e){
+    msg.className='err'; msg.textContent = e.message;
+    btn.disabled = false; btn.textContent = '🔒 Pay — Try again';
+    renderTiers();
+  }
+};
+</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
+</body></html>
