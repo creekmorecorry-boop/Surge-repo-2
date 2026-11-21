@@ -1,0 +1,61 @@
+name: Restore FEEDSURGE application baseline
+
+on:
+  push:
+    branches:
+      - 'feedsurge/rebuild-foundation-2026-11-21'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out rebuild branch
+        uses: actions/checkout@v4
+        with:
+          ref: feedsurge/rebuild-foundation-2026-11-21
+          path: rebuild
+
+      - name: Check out original application from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: source-main
+
+      - name: Restore original application files
+        run: |
+          set -euo pipefail
+
+          cp source-main/index.html rebuild/
+          cp source-main/auth.js rebuild/
+          cp source-main/surge-auth.js rebuild/
+          cp source-main/package.json rebuild/
+
+          mkdir -p rebuild/backend
+          cp source-main/backend/server.js rebuild/backend/
+          cp source-main/backend/package.json rebuild/backend/
+          cp source-main/backend/migration.sql rebuild/backend/
+
+          test -s rebuild/index.html
+          test -s rebuild/backend/server.js
+
+      - name: Commit restored application
+        working-directory: rebuild
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add index.html auth.js surge-auth.js package.json backend/server.js backend/package.json backend/migration.sql
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Restore original FEEDSURGE application to rebuild branch"
+            git push origin HEAD:feedsurge/rebuild-foundation-2026-11-21
+          else
+            echo "Original application files are already restored."
+          fi
