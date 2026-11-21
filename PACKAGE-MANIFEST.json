@@ -1,0 +1,146 @@
+{
+  "name": "FEEDSURGE Complete Rebuild Baseline",
+  "release": "Pass 47",
+  "files": [
+    {
+      "path": ".env.example",
+      "size": 731,
+      "sha256": "84c497702c8792235e68439d72bbcf801a529ace243b7bce56fe21a7a365c46d"
+    },
+    {
+      "path": ".github/workflows/unpack-foundation.yml",
+      "size": 641,
+      "sha256": "24ec325edf9d9a62618291188b22c203917514fff88bad4de17e6224f4087b0b"
+    },
+    {
+      "path": ".gitignore",
+      "size": 56,
+      "sha256": "7f8d3c0018adb2e906ca62caa424d8e008493b9407d7be994929d57732f91e5e"
+    },
+    {
+      "path": "BUILD-STATUS.md",
+      "size": 26370,
+      "sha256": "f92c5f263257f183e2ea6633ebd67be9da5aa124e15f265f62090697544ce71c"
+    },
+    {
+      "path": "DEPLOYMENT-CHECKLIST.md",
+      "size": 2225,
+      "sha256": "9379b58477d982666dec37aefdb3e721b7e1f738145d6ea752c0899a0137fe0e"
+    },
+    {
+      "path": "FRONTEND-API-CONTRACT.md",
+      "size": 10317,
+      "sha256": "c4b9a7c7c72a91062b078a887e5e6ff21aafa9dc00e9d6baf17d728bf440fac7"
+    },
+    {
+      "path": "PASS-45-46-RELEASE-NOTES.md",
+      "size": 3056,
+      "sha256": "a7a6eab63345fd0cde805c99b5f0f5da7dc9ca24334899bf87ad2332ef35b3be"
+    },
+    {
+      "path": "PASS-47-RELEASE-NOTES.md",
+      "size": 2681,
+      "sha256": "e7fc00541dc8fbc80fbe08028b86f8542988733536e244b76690ea0d4cbca4a4"
+    },
+    {
+      "path": "README.md",
+      "size": 2381,
+      "sha256": "a292ccc7268a2da8a62f32b12cee5bbff7525c71fc92104defb6f6f8f54f9ab5"
+    },
+    {
+      "path": "assets/feedsurge-app-icon.jpg",
+      "size": 83698,
+      "sha256": "c3f546083a0f7605f39c145d6f1fd51655f9af2e9219d6c26c1d484448c6ced7"
+    },
+    {
+      "path": "backend/.env.example",
+      "size": 731,
+      "sha256": "84c497702c8792235e68439d72bbcf801a529ace243b7bce56fe21a7a365c46d"
+    },
+    {
+      "path": "backend/README.md",
+      "size": 542,
+      "sha256": "511fe504c88f8115f9fd5b9be00a8bce45b224f11c580a43dd150773d8190089"
+    },
+    {
+      "path": "backend/migration.sql",
+      "size": 26546,
+      "sha256": "f296c20426656282d070bcce2f1de088cfded14cac5fc973d5a46f9c9c44ac64"
+    },
+    {
+      "path": "backend/package.json",
+      "size": 512,
+      "sha256": "6211ad676891d0a9bf5b41dd17d7d052c87c625102f9f1ae6ac07e019fa2b9c6"
+    },
+    {
+      "path": "backend/pricing-authority.json",
+      "size": 1295,
+      "sha256": "e794613642c0d956aa0c07da39b28221a122641a2c65344415654b72723d2b31"
+    },
+    {
+      "path": "backend/server.js",
+      "size": 66945,
+      "sha256": "8e2ac2c45ae737e4f240d0f1218cba45116ab138640c13a5455afc882a4814cf"
+    },
+    {
+      "path": "database/migrations/README.md",
+      "size": 357,
+      "sha256": "ac5aef924528ca833d166a00ecedb270acbbe6580878e044abe866e04fa58845"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "size": 1233,
+      "sha256": "95b09da7849309bce21e674a462c4e7c66301ef0edd0156acc89859a5293c80a"
+    },
+    {
+      "path": "docs/IMPLEMENTATION_STATUS.md",
+      "size": 838,
+      "sha256": "60178755c2a67cc9f9c6cd6ed7a3ac4ec59d5581bd26cb222264c9d61f54bcaf"
+    },
+    {
+      "path": "docs/SAFE_STAGING_CHECKLIST.md",
+      "size": 749,
+      "sha256": "f143a36cae65b60252edd2a2aecf0f205b27557546f713a3f0678b67e637b1f9"
+    },
+    {
+      "path": "feedsurge-api.js",
+      "size": 66945,
+      "sha256": "8e2ac2c45ae737e4f240d0f1218cba45116ab138640c13a5455afc882a4814cf"
+    },
+    {
+      "path": "feedsurge-database.sql",
+      "size": 7952,
+      "sha256": "9f32641c32e9d2fb12ecddf47d7e8065388adfced786a4bc736c1f47f31ad863"
+    },
+    {
+      "path": "feedsurge-phase2-platform.sql",
+      "size": 18404,
+      "sha256": "f8250d8f243a41a604e6168638505ebf087b41a01242357d82a1ca568640be10"
+    },
+    {
+      "path": "frontend/README.md",
+      "size": 223,
+      "sha256": "7ebed3d30a6ce0598f6a8c74edcfcea6bfef68173f04c19eef3ce221a243d1ce"
+    },
+    {
+      "path": "index.html",
+      "size": 2844415,
+      "sha256": "30d75da1c4abe98c88903271d7466fc83c7034bde82cf9c6a5ade30d1fd76106"
+    },
+    {
+      "path": "package.json",
+      "size": 562,
+      "sha256": "b03d8a4e64a4ce9302850bac1e6dcd93bcb6decff74a1b2b8eb8ee7f70d4fe70"
+    },
+    {
+      "path": "pricing-authority.json",
+      "size": 1295,
+      "sha256": "e794613642c0d956aa0c07da39b28221a122641a2c65344415654b72723d2b31"
+    },
+    {
+      "path": "scripts/smoke-check.js",
+      "size": 22092,
+      "sha256": "9b75dfeb609c4628212750399fba23366f336ac2cd3b2d5c3aaf6028978d55ac"
+    }
+  ]
+}
