@@ -1,0 +1,57 @@
+
+name: FEEDSURGE Rebuild Validation
+
+on:
+  push:
+    branches:
+      - 'feedsurge/rebuild-foundation-2026-11-21'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate FEEDSURGE Pass 47
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out rebuild branch
+        uses: actions/checkout@v4
+        with:
+          ref: feedsurge/rebuild-foundation-2026-11-21
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify required application files
+        run: |
+          set -euo pipefail
+
+          test -s index.html
+          test -s feedsurge-api.js
+          test -s package.json
+          test -s feedsurge-database.sql
+          test -s feedsurge-phase2-platform.sql
+          test -s pricing-authority.json
+          test -s scripts/smoke-check.js
+
+          echo "All required FEEDSURGE application files exist."
+
+      - name: Verify backend syntax
+        run: |
+          set -euo pipefail
+          node --check feedsurge-api.js
+
+      - name: Run package checks
+        run: npm run check
+
+      - name: Run full regression suite
+        run: npm test
+
+      - name: Validation complete
+        run: |
+          echo "FEEDSURGE Pass 47 validation completed."
+          echo "No production services or databases were modified."
