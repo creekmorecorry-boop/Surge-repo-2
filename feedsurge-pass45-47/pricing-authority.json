@@ -1,0 +1,56 @@
+{
+  "currency": "USD",
+  "billing_display": "monthly",
+  "creator": {
+    "FREE": {
+      "price": 0,
+      "posts_per_day": 3,
+      "video_seconds": 30
+    },
+    "PRO": {
+      "price": 12.99,
+      "posts_per_day": 10,
+      "video_seconds": 60
+    },
+    "ELITE": {
+      "price": 24.99,
+      "posts_per_day": 50,
+      "video_seconds": 60
+    },
+    "STUDIO": {
+      "price": 49.99,
+      "posts_per_day": 60,
+      "shared_team_seats": 5,
+      "video_seconds": 60
+    }
+  },
+  "business": {
+    "BUSINESS": {
+      "price": 29,
+      "posts_per_day": "unlimited",
+      "ads": "unlimited",
+      "scheduled_posts": "unlimited",
+      "listings_groups_campaigns": "unlimited",
+      "team_seats": 10
+    },
+    "BUSINESS ELITE": {
+      "price": 59,
+      "posts_per_day": "unlimited",
+      "team_seats": "unlimited",
+      "priority_boost": "unlimited",
+      "max_reach_featured": true,
+      "dedicated_support": true,
+      "early_access": true
+    },
+    "BUSINESS STUDIO": {
+      "price": 99,
+      "posts_per_day": "unlimited",
+      "team_seats": 25,
+      "multi_location_multi_brand": true,
+      "approvals_calendar_scheduling": true,
+      "brand_deals_escrow_dashboard": true,
+      "advanced_analytics_audience_insights": true,
+      "priority_support": true
+    }
+  }
+}
